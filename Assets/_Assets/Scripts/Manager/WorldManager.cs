@@ -6,7 +6,8 @@ public enum WorldType
 {
     REAL = 0,
     NET = 1,
-    UNKNI
+
+    UNKNOWN = 2
 };
 
 public class WorldManager : MonoBehaviour
