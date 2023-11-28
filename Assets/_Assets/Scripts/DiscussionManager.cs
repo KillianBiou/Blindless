@@ -7,7 +7,7 @@ public class DiscussionManager : MonoBehaviour
 {
     [SerializeField][Range(0f,1000f)] private float lowCutoffFrequency = 250f;
     [SerializeField][Range(1000f,20000f)] private float highCutoffFrequency = 1500f;
-    [SerializeField][Range(0f,10f)] private float cutoffFrequencyBlend = 5f;
+    [SerializeField][Range(0f,1f)] private float cutoffFrequencyBlend = 1f;
     private AudioLowPassFilter lowPassFilter;
 
     private bool muffled = true;
@@ -39,7 +39,7 @@ public class DiscussionManager : MonoBehaviour
 
         if (!muffled)
         {
-            lowPassFilter.cutoffFrequency = Mathf.Lerp(currentCutoffFrequency, highCutoffFrequency, Time.deltaTime / cutoffFrequencyBlend);
+            lowPassFilter.cutoffFrequency = Mathf.Lerp(currentCutoffFrequency, highCutoffFrequency, Time.deltaTime * cutoffFrequencyBlend);
         }
 
         else
