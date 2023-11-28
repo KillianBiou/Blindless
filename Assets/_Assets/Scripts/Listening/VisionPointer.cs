@@ -34,6 +34,11 @@ public class VisionPointer : MonoBehaviour
     private bool eyeTemp;
     private float eyeTimestamp;
 
+    [Header ("Objects at muffle range")]
+    private Collider[] unmuffulableObjects;
+    [SerializeField] private float muffleDistance = 1f;
+    [SerializeField] private LayerMask muffleLayerMask;
+
     private void Start()
     {
         faceExpression = GetComponent<OVRFaceExpressions>();
@@ -97,11 +102,19 @@ public class VisionPointer : MonoBehaviour
 
     private void TriggerClosedEye()
     {
-        Debug.Log("Eye Closed");
+        unmuffulableObjects = Physics.OverlapSphere(objectToMove.position, muffleDistance, muffleLayerMask);
+        foreach (var muffledObject in unmuffulableObjects)
+        {
+            muffledObject.GetComponent<DiscussionManager>().MuffleDiscussion(false);
+        }
     }
 
     private void TriggerOpenEye()
     {
-        Debug.Log("Eye Openeed");
+        foreach (var muffledObject in unmuffulableObjects)
+        {
+            muffledObject.GetComponent<DiscussionManager>().MuffleDiscussion(false);
+        }
+        unmuffulableObjects = null;
     }
 }
