@@ -677,7 +677,7 @@ GameObject:
   - component: {fileID: 746483593}
   - component: {fileID: 746483592}
   - component: {fileID: 746483591}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -697,8 +697,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lowCutoffFrequency: 250
-  highCutoffFrequency: 1500
-  cutoffFrequencyBlend: 1
+  highCutoffFrequency: 3000
+  cutoffFrequencyBlend: 3
 --- !u!82 &746483592
 AudioSource:
   m_ObjectHideFlags: 0
@@ -709,7 +709,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 9ad0ff8db11dae947b4acb0eb7f8861a, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 2e328c1abbcc3b443814f2a61e2ff58e, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -1498,7 +1498,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 771dcb3a21094d546b0ff6503ce7d4b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentWorld: 0
 --- !u!114 &2113188727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1525,6 +1524,14 @@ PrefabInstance:
       propertyPath: objectToMove
       value: 
       objectReference: {fileID: 1398420247}
+    - target: {fileID: 1535922225593137784, guid: f731aa7dec67a7f4e989ae285b23e9a1, type: 3}
+      propertyPath: muffleDistance
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1535922225593137784, guid: f731aa7dec67a7f4e989ae285b23e9a1, type: 3}
+      propertyPath: eyeClosedDuration
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 3203985760643665928, guid: f731aa7dec67a7f4e989ae285b23e9a1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

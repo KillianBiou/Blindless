@@ -9958,6 +9958,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   eyeTransform: {fileID: 7827933252102433466}
   centerEye: {fileID: 1025840898141904810}
+  closedEyeValue: 0.5
+  eyeClosedDuration: 1
   doLerp: 1
   lerpSpeed: 0.1
   snappingDistance: 0.1
@@ -9965,6 +9967,10 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 64
+  muffleDistance: 1
+  muffleLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!114 &699172237760144096
 MonoBehaviour:
   m_ObjectHideFlags: 0
