@@ -40,7 +40,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ParallaxMapping_4f59d0b1eb0d42c795f6bdaeeec486a5_Heightmap_1_Texture2D:
-        m_Texture: {fileID: 2800000, guid: f83d42339bda680439d424abe4597a51, type: 3}
+        m_Texture: {fileID: 2800000, guid: 58b4c83364ef3904fb155290062763e0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ParallaxMapping_8f2390047abf475e9d6e9dda11f7e0b7_Heightmap_1_Texture2D:
@@ -59,9 +59,11 @@ Material:
     m_Floats:
     - _BUILTIN_QueueControl: 0
     - _BUILTIN_QueueOffset: 0
-    - _DissolveAmount: 0
+    - _DissolveAmount: 0.5
     - _DissolveScale: 2
     - _DissolveStrenght: 1
+    - _GitchVelocity: 6
+    - _GlitchDensity: 0.5
     - _Metallic: 0
     - _NormalStrenght: 4
     - _OutlineScale: 0.01
@@ -69,6 +71,7 @@ Material:
     - _Smoothness: 0.5
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 0}
+    - _GlitchColor: {r: 0, g: 3.9999995, b: 1.6559342, a: 0}
     - _OutlineColor: {r: 0, g: 0.4329896, b: 1, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &670495964448687517
