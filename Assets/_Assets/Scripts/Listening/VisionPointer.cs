@@ -48,7 +48,6 @@ public class VisionPointer : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        CheckEyeState();
         if (!closedEye || eyeTemp)
         {
             Ray ray = new Ray(eyeTransform.position, eyeTransform.forward);
@@ -72,6 +71,12 @@ public class VisionPointer : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        CheckEyeState();
+
+    }
+
     private void CheckEyeState()
     {
         if (!faceExpression.isActiveAndEnabled)
@@ -79,7 +84,7 @@ public class VisionPointer : MonoBehaviour
             return;
         }
 
-        if (faceExpression[OVRFaceExpressions.FaceExpression.EyesClosedR] >= closedEyeValue && faceExpression[OVRFaceExpressions.FaceExpression.EyesClosedR] >= closedEyeValue)
+        if (faceExpression[OVRFaceExpressions.FaceExpression.EyesClosedR] >= closedEyeValue && faceExpression[OVRFaceExpressions.FaceExpression.EyesClosedL] >= closedEyeValue)
         {
             if (eyeTemp == false)
                 eyeTimestamp = Time.time + eyeClosedDuration;
@@ -92,7 +97,7 @@ public class VisionPointer : MonoBehaviour
                 closedEye = true;
             }
         }
-        else if (faceExpression[OVRFaceExpressions.FaceExpression.EyesClosedR] < closedEyeValue && faceExpression[OVRFaceExpressions.FaceExpression.EyesClosedR] < closedEyeValue)
+        else if (faceExpression[OVRFaceExpressions.FaceExpression.EyesClosedR] < closedEyeValue && faceExpression[OVRFaceExpressions.FaceExpression.EyesClosedL] < closedEyeValue)
         {
             if (eyeTemp == false)
                 eyeTimestamp = Time.time + eyeClosedDuration;
@@ -109,7 +114,6 @@ public class VisionPointer : MonoBehaviour
 
     private void TriggerClosedEye()
     {
-        Debug.Log("Eye closed");
         unmuffulableObjects = Physics.OverlapSphere(objectToMove.position, muffleDistance, muffleLayerMask);
         Debug.Log(unmuffulableObjects.Length);
         foreach (var muffledObject in unmuffulableObjects)
@@ -125,6 +129,11 @@ public class VisionPointer : MonoBehaviour
             muffledObject.GetComponent<DiscussionManager>().MuffleDiscussion(true);
         }
         unmuffulableObjects = null;
+    }
+
+    private void CheckHandState()
+    {
+
     }
 
     private void OnDrawGizmosSelected()

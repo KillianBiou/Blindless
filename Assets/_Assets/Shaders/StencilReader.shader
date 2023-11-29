@@ -15,7 +15,7 @@ Shader "Unlit/StencilReader"
             Stencil
             {
                 Ref [_StencilValue]
-                Comp NotEqual
+                Comp Equal
                 Pass Keep
                 Fail Keep
                 ZFail Keep
