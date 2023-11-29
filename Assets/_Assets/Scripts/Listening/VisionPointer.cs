@@ -48,7 +48,7 @@ public class VisionPointer : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (!closedEye || eyeTemp)
+        if (!closedEye || !eyeTemp)
         {
             Ray ray = new Ray(eyeTransform.position, eyeTransform.forward);
             RaycastHit hit;
