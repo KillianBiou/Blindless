@@ -59,13 +59,15 @@ Material:
     m_Floats:
     - _BUILTIN_QueueControl: 0
     - _BUILTIN_QueueOffset: 0
-    - _DissolveAmount: 0.505
+    - _DissolveAmount: 0
     - _DissolveScale: 2
     - _DissolveStrenght: 1
     - _GitchVelocity: 6
-    - _GlitchDensity: 0.5
+    - _GlitchDensity: 0.45
+    - _GlitchDensitySinMultiplier: 0.1
+    - _GlitchDensitySinSpeed: 2
     - _Metallic: 0
-    - _NormalStrenght: 4
+    - _NormalStrenght: 1
     - _OutlineScale: 0.01
     - _OutlineStrenght: 0.5
     - _Smoothness: 0.5

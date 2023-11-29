@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public enum WorldType
 {
@@ -23,12 +25,27 @@ public class WorldManager : MonoBehaviour
     private List<Renderer> extraRenderer;
     [SerializeField]
     private float transitionTime;
+    public float materialColorSpeed;
 
     [Header("World Reference")]
     [SerializeField]
     private GameObject realWorldReference;
     [SerializeField]
     private NetWorldManager netWorldReference;
+
+    [Header("Net Color Parameters")]
+    [SerializeField]
+    [ColorUsage(true, true)]
+    private Color baseColor;
+    [SerializeField]
+    [ColorUsage(true, true)]
+    private Color baseColorTwo;
+    [SerializeField]
+    [ColorUsage(true, true)]
+    private Color triggeredColor;
+    [SerializeField]
+    [ColorUsage(true, true)]
+    private Color triggeredColorTwo;
 
     [Header("DEBUG ONLY")]
     [SerializeField]
@@ -40,6 +57,7 @@ public class WorldManager : MonoBehaviour
 
     public static WorldManager instance;
 
+    private bool triggerCommutator = false;
     private List<Renderer> renderersList;
 
     private void Awake()
@@ -52,6 +70,12 @@ public class WorldManager : MonoBehaviour
         renderersList = sceneParent.GetComponentsInChildren<Renderer>().ToList();
         renderersList.AddRange(extraRenderer);
 
+        foreach(Renderer r in renderersList)
+        {
+            NetShaderAnimation temp = r.AddComponent<NetShaderAnimation>();
+            temp.Setup(baseColor, baseColorTwo, triggeredColor, triggeredColorTwo);
+        }
+
         LoadRealWorld();
     }
 
@@ -61,6 +85,9 @@ public class WorldManager : MonoBehaviour
             SwapWorld(WorldType.REAL);
         else if (Input.GetKeyDown(KeyCode.N))
             SwapWorld(WorldType.NET);
+        else if (Input.GetKeyDown(KeyCode.T))
+            TriggerNet();
+
     }
 
     public void SwapWorld(WorldType newWorld)
@@ -106,15 +133,28 @@ public class WorldManager : MonoBehaviour
         Debug.Log("LOAD REAL WORLD NOT YET IMPLEMENTED");
         if (debugMode)
         {
-            StartCoroutine(MaterialsLerp(realWorldColor));
+            StartCoroutine(MaterialsLerpDebug(realWorldColor));
         }
-        realWorldReference.SetActive(true);
+        else
+        {
+            StartCoroutine(ToRealLerp());
+        }
+
+        foreach (Renderer temp in renderersList)
+        {
+            NetShaderAnimation nsa = temp.GetComponent<NetShaderAnimation>();
+            nsa.SetDoLerp(false);
+        }
+
+        if (realWorldReference)
+            realWorldReference.SetActive(true);
     }
 
     private void UnloadRealWorld()
     {
         Debug.Log("UNLOAD REAL WORLD NOT YET IMPLEMENTED");
-        realWorldReference.SetActive(false);
+        if(realWorldReference)
+            realWorldReference.SetActive(false);
     }
 
     private void LoadNetWorld()
@@ -122,18 +162,96 @@ public class WorldManager : MonoBehaviour
         Debug.Log("LOAD NET WORLD NOT YET IMPLEMENTED");
         if (debugMode)
         {
-            StartCoroutine(MaterialsLerp(netWorldColor));
+            StartCoroutine(MaterialsLerpDebug(netWorldColor));
         }
-        netWorldReference.Load(transitionTime);
+        else
+        {
+            StartCoroutine(ToNetLerp());
+        }
+
+        foreach (Renderer temp in renderersList)
+        {
+            NetShaderAnimation nsa = temp.GetComponent<NetShaderAnimation>();
+            nsa.SetDoLerp(true);
+        }
+
+        if (netWorldReference)
+            netWorldReference.Load(transitionTime);
     }
 
     private void UnloadNetWorld()
     {
         Debug.Log("UNLOAD NET WORLD NOT YET IMPLEMENTED");
-        netWorldReference.Unload(transitionTime);
+        if(netWorldReference)
+            netWorldReference.Unload(transitionTime);
     }
 
-    private IEnumerator MaterialsLerp(Color newColor)
+    private void TriggerNet() 
+    {
+        triggerCommutator = !triggerCommutator;
+        foreach (Renderer temp in renderersList)
+        {
+            NetShaderAnimation nsa = temp.GetComponent<NetShaderAnimation>();
+            nsa.ChangeTrigger(triggerCommutator);
+        }
+    }
+
+    private IEnumerator ToNetLerp()
+    {
+        foreach (Renderer r in renderersList)
+        {
+            r.material.SetFloat("_NormalStrenght", 0f);
+        }
+
+        float t = 0f;
+        while (t < transitionTime)
+        {
+            foreach (Renderer r in renderersList)
+            {
+                r.material.SetFloat("_DissolveAmount", t / transitionTime);
+            }
+
+            yield return new WaitForEndOfFrame();
+            t += Time.deltaTime;
+        }
+
+        foreach (Renderer r in renderersList)
+        {
+            r.material.SetFloat("_DissolveAmount", 1f);
+        }
+
+        yield return null;
+    }
+
+    private IEnumerator ToRealLerp()
+    {
+        foreach (Renderer r in renderersList)
+        {
+            r.material.SetFloat("_NormalStrenght", 1f);
+        }
+
+        float t = 0f;
+        while (t < transitionTime)
+        {
+            foreach (Renderer r in renderersList)
+            {
+                //r.material.SetFloat("_DissolveAmount", 1 - (t / transitionTime));
+                r.sharedMaterial.SetFloat("_DissolveAmount", 1 - (t / transitionTime));
+            }
+
+            yield return new WaitForEndOfFrame();
+            t += Time.deltaTime;
+        }
+
+        foreach (Renderer r in renderersList)
+        {
+            r.material.SetFloat("_DissolveAmount", 0f);
+        }
+
+        yield return null;
+    }
+
+    private IEnumerator MaterialsLerpDebug(Color newColor)
     {
         // DEBUG LERP
         Color currentColor = currentWorld == WorldType.REAL ? realWorldColor : netWorldColor;
