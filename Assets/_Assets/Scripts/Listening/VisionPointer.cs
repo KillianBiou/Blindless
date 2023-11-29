@@ -48,31 +48,43 @@ public class VisionPointer : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        Ray ray = new Ray(eyeTransform.position, eyeTransform.forward);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, targetLayer))
+        if (!closedEye || eyeTemp)
         {
-            targetPos = hit.point;
-        }
-
-        if (doLerp)
-        {
-            if(Vector3.Distance(targetPos, objectToMove.position) > snappingDistance)
+            Ray ray = new Ray(eyeTransform.position, eyeTransform.forward);
+            RaycastHit hit;
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, targetLayer))
             {
-                objectToMove.position += (targetPos - objectToMove.position) * lerpSpeed;
+                targetPos = hit.point;
+            }
+
+            if (doLerp)
+            {
+                if (Vector3.Distance(targetPos, objectToMove.position) > snappingDistance)
+                {
+                    objectToMove.position += (targetPos - objectToMove.position) * lerpSpeed;
+                }
+                else
+                    objectToMove.position = targetPos;
             }
             else
                 objectToMove.position = targetPos;
         }
-        else
-            objectToMove.position = targetPos;
+    }
+
+    private void Update()
+    {
         CheckEyeState();
 
     }
 
     private void CheckEyeState()
     {
-        if (faceExpression[OVRFaceExpressions.FaceExpression.EyesClosedR] >= closedEyeValue && faceExpression[OVRFaceExpressions.FaceExpression.EyesClosedR] >= closedEyeValue)
+        if (!faceExpression.isActiveAndEnabled)
+        {
+            return;
+        }
+
+        if (faceExpression[OVRFaceExpressions.FaceExpression.EyesClosedR] >= closedEyeValue && faceExpression[OVRFaceExpressions.FaceExpression.EyesClosedL] >= closedEyeValue)
         {
             if (eyeTemp == false)
                 eyeTimestamp = Time.time + eyeClosedDuration;
@@ -85,7 +97,7 @@ public class VisionPointer : MonoBehaviour
                 closedEye = true;
             }
         }
-        else if (faceExpression[OVRFaceExpressions.FaceExpression.EyesClosedR] < closedEyeValue && faceExpression[OVRFaceExpressions.FaceExpression.EyesClosedR] < closedEyeValue)
+        else if (faceExpression[OVRFaceExpressions.FaceExpression.EyesClosedR] < closedEyeValue && faceExpression[OVRFaceExpressions.FaceExpression.EyesClosedL] < closedEyeValue)
         {
             if (eyeTemp == false)
                 eyeTimestamp = Time.time + eyeClosedDuration;
@@ -103,6 +115,7 @@ public class VisionPointer : MonoBehaviour
     private void TriggerClosedEye()
     {
         unmuffulableObjects = Physics.OverlapSphere(objectToMove.position, muffleDistance, muffleLayerMask);
+        Debug.Log(unmuffulableObjects.Length);
         foreach (var muffledObject in unmuffulableObjects)
         {
             muffledObject.GetComponent<DiscussionManager>().MuffleDiscussion(false);
@@ -113,8 +126,19 @@ public class VisionPointer : MonoBehaviour
     {
         foreach (var muffledObject in unmuffulableObjects)
         {
-            muffledObject.GetComponent<DiscussionManager>().MuffleDiscussion(false);
+            muffledObject.GetComponent<DiscussionManager>().MuffleDiscussion(true);
         }
         unmuffulableObjects = null;
+    }
+
+    private void CheckHandState()
+    {
+
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(objectToMove.position, muffleDistance);
     }
 }
