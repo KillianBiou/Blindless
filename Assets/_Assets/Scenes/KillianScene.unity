@@ -1226,6 +1226,11 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1398420243}
   m_Enabled: 1
+--- !u!1 &1745436492 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5174912668068730233, guid: f731aa7dec67a7f4e989ae285b23e9a1, type: 3}
+  m_PrefabInstance: {fileID: 6459807247878093992}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1957536885
 GameObject:
   m_ObjectHideFlags: 0
@@ -1521,6 +1526,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2113188725}
   - component: {fileID: 2113188726}
+  - component: {fileID: 2113188727}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1559,11 +1565,34 @@ MonoBehaviour:
   sceneParent: {fileID: 1189630344}
   extraRenderer: []
   transitionTime: 2
+  materialColorSpeed: 0
   realWorldReference: {fileID: 281964483}
   netWorldReference: {fileID: 1957536887}
+  baseColor: {r: 0, g: 0, b: 0, a: 0}
+  baseColorTwo: {r: 0, g: 0, b: 0, a: 0}
+  triggeredColor: {r: 0, g: 0, b: 0, a: 0}
+  triggeredColorTwo: {r: 0, g: 0, b: 0, a: 0}
   debugMode: 1
   realWorldColor: {r: 1, g: 1, b: 1, a: 1}
   netWorldColor: {r: 0, g: 0.11449838, b: 1, a: 1}
+--- !u!114 &2113188727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2113188724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 618743b66be537f4a9d0f66e948ca172, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wavesList:
+  - enemyNumber: 5
+  daemonPrefab: {fileID: 1652657993561082910, guid: 8a08dd5899f045b47b6f2662a992d471, type: 3}
+  player: {fileID: 1745436492}
+  distanceMinMax: {x: 5, y: 10}
+  maxAngle: 90
 --- !u!1001 &6459807247878093992
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1598,19 +1627,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3203985760643665928, guid: f731aa7dec67a7f4e989ae285b23e9a1, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.7540535
       objectReference: {fileID: 0}
     - target: {fileID: 3203985760643665928, guid: f731aa7dec67a7f4e989ae285b23e9a1, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3203985760643665928, guid: f731aa7dec67a7f4e989ae285b23e9a1, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: 0.6568131
       objectReference: {fileID: 0}
     - target: {fileID: 3203985760643665928, guid: f731aa7dec67a7f4e989ae285b23e9a1, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3203985760643665928, guid: f731aa7dec67a7f4e989ae285b23e9a1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1618,7 +1647,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3203985760643665928, guid: f731aa7dec67a7f4e989ae285b23e9a1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 82.115
       objectReference: {fileID: 0}
     - target: {fileID: 3203985760643665928, guid: f731aa7dec67a7f4e989ae285b23e9a1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
