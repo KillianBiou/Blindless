@@ -25,6 +25,8 @@ public class WorldManager : MonoBehaviour
     private List<Renderer> extraRenderer;
     [SerializeField]
     private float transitionTime;
+    [SerializeField]
+    private float transitionTimeToReal;
     public float materialColorSpeed;
 
     [Header("World Reference")]
@@ -257,12 +259,12 @@ public class WorldManager : MonoBehaviour
         }
 
         float t = 0f;
-        while (t < transitionTime)
+        while (t < transitionTimeToReal)
         {
             foreach (Renderer r in renderersList)
             {
                 //r.material.SetFloat("_DissolveAmount", 1 - (t / transitionTime));
-                r.sharedMaterial.SetFloat("_DissolveAmount", 1 - (t / transitionTime));
+                r.sharedMaterial.SetFloat("_DissolveAmount", 1 - (t / transitionTimeToReal));
             }
 
             yield return new WaitForEndOfFrame();

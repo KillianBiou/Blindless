@@ -1545,6 +1545,7 @@ MonoBehaviour:
   sceneParent: {fileID: 1135080177}
   extraRenderer: []
   transitionTime: 1
+  transitionTimeToReal: 0.5
   materialColorSpeed: 1
   realWorldReference: {fileID: 281964483}
   netWorldReference: {fileID: 1957536887}
@@ -1570,18 +1571,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wavesList:
   - enemyNumber: 5
-    cdBetweenEnemy: 1
+    cdBetweenEnemy: 10
   - enemyNumber: 2
-    cdBetweenEnemy: 0.5
+    cdBetweenEnemy: 10
   - enemyNumber: 3
-    cdBetweenEnemy: 1.5
+    cdBetweenEnemy: 10
   timeBetweenWave: 3
   deamonMaxHealth: 10
-  deamonSpeed: 1
-  daemonPrefab: {fileID: 1652657993561082910, guid: 8a08dd5899f045b47b6f2662a992d471, type: 3}
+  deamonSpeed: 0.08
+  daemonPrefab: {fileID: 2267033473182024610, guid: 831eef1b16bbd0948a6c22348a5f6ecd, type: 3}
   player: {fileID: 1745436492}
-  distanceMinMax: {x: 5, y: 10}
+  distanceMinMax: {x: 30, y: 35}
   maxAngle: 90
+  downOffset: 15
 --- !u!1001 &6459807247878093992
 PrefabInstance:
   m_ObjectHideFlags: 0

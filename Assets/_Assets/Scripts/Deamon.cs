@@ -11,13 +11,25 @@ public class Deamon : MonoBehaviour
 
     [SerializeField] private Transform target;
 
+    private Animator animator;
+
+    private float velocity;
+    private Vector3 lastPos;
+    private float downOffset;
+
+    private void Start()
+    {
+        animator = GetComponent<Animator>();
+    }
+
     // Update is called once per frame
     void Update()
     {
         if (target)
         {
-            transform.LookAt(target);
-            transform.position = Vector3.Lerp(transform.position, target.position, speed * Time.deltaTime);
+            transform.LookAt(target.position + Vector3.down * downOffset);
+            transform.position = Vector3.Lerp(transform.position, target.position + Vector3.down * downOffset, speed * Time.deltaTime);
+            lastPos = transform.position;
             if(Vector3.Distance(transform.position, target.position) < 1f)
             {
                 target.GetComponent<Player>().TakeDamage(1);
@@ -26,11 +38,12 @@ public class Deamon : MonoBehaviour
         }
     }
 
-    public void Instantiate(int maxHealth, float speed, Transform target)
+    public void Instantiate(int maxHealth, float speed, Transform target, float downOffset)
     {
         this.maxHealth = maxHealth;
         this.health = maxHealth;
         this.speed = speed;
         this.target = target;
+        this.downOffset = downOffset;
     }
 }
