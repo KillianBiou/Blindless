@@ -10006,6 +10006,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   leftEyeTransform: {fileID: 4455409130072089802}
+  lockDuration: 3
 --- !u!1 &5179068040846732546
 GameObject:
   m_ObjectHideFlags: 0
