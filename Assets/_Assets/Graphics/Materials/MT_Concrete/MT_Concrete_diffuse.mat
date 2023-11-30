@@ -65,7 +65,7 @@ Material:
     - _GitchVelocity: 4
     - _GlitchDensity: 0.5
     - _Metallic: 0
-    - _NormalStrenght: 4
+    - _NormalStrenght: 0
     - _OutlineScale: 0.01
     - _OutlineStrenght: 0.5
     - _Smoothness: 0.5
