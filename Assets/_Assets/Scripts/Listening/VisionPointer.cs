@@ -83,7 +83,7 @@ public class VisionPointer : MonoBehaviour
 
     private void CheckEyeState()
     {
-        if (!faceExpression.isActiveAndEnabled)
+        if (!faceExpression || !faceExpression.isActiveAndEnabled)
         {
             return;
         }
