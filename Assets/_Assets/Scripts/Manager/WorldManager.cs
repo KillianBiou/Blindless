@@ -49,6 +49,12 @@ public class WorldManager : MonoBehaviour
     [ColorUsage(true, true)]
     private Color triggeredColorTwo;
     [SerializeField]
+    [ColorUsage(true, true)]
+    private Color realAmbiant;
+    [SerializeField]
+    [ColorUsage(true, true)]
+    private Color netAmbiant;
+    [SerializeField]
     private float shrinkExpandFactor;
 
     [Header("DEBUG ONLY")]
@@ -248,6 +254,8 @@ public class WorldManager : MonoBehaviour
             r.material.SetFloat("_DissolveAmount", 1f);
         }
 
+        RenderSettings.ambientLight = netAmbiant;
+
         yield return null;
     }
 
@@ -275,6 +283,8 @@ public class WorldManager : MonoBehaviour
         {
             r.material.SetFloat("_DissolveAmount", 0f);
         }
+
+        RenderSettings.ambientLight = realAmbiant;
 
         yield return null;
     }
