@@ -90,7 +90,23 @@ public class WorldManager : MonoBehaviour
 
     }
 
-    public void SwapWorld(WorldType newWorld)
+    public void CycleWorld()
+    {
+        switch (currentWorld)
+        {
+            case WorldType.REAL:
+                SwapWorld(WorldType.NET);
+                break;
+            case WorldType.NET:
+                SwapWorld(WorldType.REAL);
+                break;
+            default:
+                Debug.Log("Unknown Error while cycling worlds");
+                break;
+        }
+    }
+
+    private void SwapWorld(WorldType newWorld)
     {
         if (newWorld == currentWorld)
             return;

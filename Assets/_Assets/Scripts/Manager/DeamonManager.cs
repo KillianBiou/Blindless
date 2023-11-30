@@ -9,11 +9,19 @@ public struct Wave
     public float cdBetweenEnemy;
 }
 
-public class DeamonManager : MonoBehaviour
+public class DeamonManager : MonoBehaviour, PlayerSubscriber
 {
     [Header("Gameflow parameters")]
     [SerializeField]
     private List<Wave> wavesList;
+    [SerializeField]
+    private float timeBetweenWave;
+
+    [Header("Deamon Parameters")]
+    [SerializeField]
+    private int deamonMaxHealth;
+    [SerializeField]
+    private float deamonSpeed;
 
     [Header("Reference")]
     [SerializeField]
@@ -26,26 +34,24 @@ public class DeamonManager : MonoBehaviour
     private Vector2 distanceMinMax;
     [SerializeField]
     private float maxAngle;
-    private Vector3 baseAngle;
 
     private Vector3 targetDir;
     private Wave currentWave;
-    private Queue<Wave> waveQueue;
+    private Stack<Wave> waveQueue;
+    private bool playerDead = false;
 
     private void Start()
     {
-        baseAngle = player.transform.eulerAngles;
-        waveQueue = new Queue<Wave>(wavesList);
+        waveQueue = new Stack<Wave>(wavesList);
+        player.GetComponent<Player>().AddSubscriber(this);
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            GetRandomPointInArc();
-            //ProjectPointForward();
+            StartGame();
         }
-        Debug.DrawRay(player.transform.position, targetDir, Color.red);
     }
 
     private void StartGame()
@@ -53,7 +59,7 @@ public class DeamonManager : MonoBehaviour
         StartCoroutine(RunWave());
     }
 
-    void GetRandomPointInArc()
+    Vector3 GetRandomPointInArc()
     {
         float radius = Random.Range(distanceMinMax.x, distanceMinMax.y);
 
@@ -65,18 +71,59 @@ public class DeamonManager : MonoBehaviour
 
         targetDir = new Vector3(x, player.transform.position.y, z);
 
-        Instantiate(daemonPrefab, targetDir, Quaternion.identity);
+        return targetDir;
+    }
+
+    private void TriggerWin()
+    {
+        Debug.Log("Daemon Defeated");
+    }
+
+    private void TriggerLose()
+    {
+        foreach(Deamon d in GameObject.FindObjectsOfType<Deamon>()){
+            Destroy(d.gameObject);
+        }
+        Debug.Log("Player got fucked");
     }
 
     private IEnumerator RunWave()
     {
-        currentWave = waveQueue.;
+        currentWave = waveQueue.Pop();
         int currentEnemyCount = 0;
-        while(currentEnemyCount < currentWave.enemyNumber)
+        while(currentEnemyCount < currentWave.enemyNumber && !playerDead)
         {
             currentEnemyCount++;
+            Deamon deamon = Instantiate(daemonPrefab, GetRandomPointInArc(), Quaternion.identity).GetComponent<Deamon>();
+            deamon.Instantiate(deamonMaxHealth, deamonSpeed, player.transform);
+            float waitT = 0f;
+            while(waitT < currentWave.cdBetweenEnemy && !playerDead)
+            {
+                waitT += Time.deltaTime;
+                yield return new WaitForEndOfFrame();
+            }
         }
 
-        yield return null;
+        if(playerDead)
+        {
+            TriggerLose();
+            yield return null;
+        }
+
+        Wave nullWave;
+        if(waveQueue.TryPeek(out nullWave))
+        {
+            yield return new WaitForSeconds(timeBetweenWave);
+            StartCoroutine(RunWave());
+        }
+        else if (!playerDead)
+        {
+            TriggerWin();
+        }
+    }
+
+    public void NotifyDeath()
+    {
+        playerDead = true;
     }
 }

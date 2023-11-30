@@ -11,16 +11,26 @@ public class Deamon : MonoBehaviour
 
     [SerializeField] private Transform target;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        health = maxHealth;
-    }
-
     // Update is called once per frame
     void Update()
     {
-        transform.LookAt(target);
-        transform.position = Vector3.Lerp(transform.position, target.position, speed * Time.deltaTime);
+        if (target)
+        {
+            transform.LookAt(target);
+            transform.position = Vector3.Lerp(transform.position, target.position, speed * Time.deltaTime);
+            if(Vector3.Distance(transform.position, target.position) < 1f)
+            {
+                target.GetComponent<Player>().TakeDamage(1);
+                Destroy(gameObject);
+            }
+        }
+    }
+
+    public void Instantiate(int maxHealth, float speed, Transform target)
+    {
+        this.maxHealth = maxHealth;
+        this.health = maxHealth;
+        this.speed = speed;
+        this.target = target;
     }
 }
