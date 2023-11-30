@@ -34,6 +34,8 @@ public class DeamonManager : MonoBehaviour, PlayerSubscriber
     private Vector2 distanceMinMax;
     [SerializeField]
     private float maxAngle;
+    [SerializeField]
+    private float downOffset;
 
     private Vector3 targetDir;
     private Wave currentWave;
@@ -94,8 +96,8 @@ public class DeamonManager : MonoBehaviour, PlayerSubscriber
         while(currentEnemyCount < currentWave.enemyNumber && !playerDead)
         {
             currentEnemyCount++;
-            Deamon deamon = Instantiate(daemonPrefab, GetRandomPointInArc(), Quaternion.identity).GetComponent<Deamon>();
-            deamon.Instantiate(deamonMaxHealth, deamonSpeed, player.transform);
+            Deamon deamon = Instantiate(daemonPrefab, GetRandomPointInArc() + Vector3.down * downOffset, Quaternion.identity).GetComponent<Deamon>();
+            deamon.Instantiate(deamonMaxHealth, deamonSpeed, player.transform, downOffset);
             float waitT = 0f;
             while(waitT < currentWave.cdBetweenEnemy && !playerDead)
             {
