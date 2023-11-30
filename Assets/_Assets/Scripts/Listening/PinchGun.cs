@@ -69,6 +69,7 @@ public class PinchGun : MonoBehaviour
                 collider.gameObject.SetActive(false);
             }
             lockTemp = false;
+            TransfoManager.instance.CheckState();
         }
     }
 

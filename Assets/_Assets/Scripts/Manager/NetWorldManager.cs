@@ -32,4 +32,12 @@ public class NetWorldManager : MonoBehaviour
             item.OnUnload(duration);
         }
     }
+
+    public void ForceUnload()
+    {
+        foreach(WorldItem item in worldItems)
+        {
+            item.ForceUnload();
+        }
+    }
 }

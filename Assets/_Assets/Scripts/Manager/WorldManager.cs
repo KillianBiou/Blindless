@@ -88,6 +88,7 @@ public class WorldManager : MonoBehaviour
         }
 
         LoadRealWorld();
+        netWorldReference.ForceUnload();
     }
 
     private void Update()
@@ -206,13 +207,15 @@ public class WorldManager : MonoBehaviour
         }
 
         if (netWorldReference)
+        {
             netWorldReference.Load(transitionTime);
+        }
     }
 
     private void UnloadNetWorld()
     {
         Debug.Log("UNLOAD NET WORLD NOT YET IMPLEMENTED");
-        if(netWorldReference)
+        if (netWorldReference)
             netWorldReference.Unload(transitionTime);
     }
 
