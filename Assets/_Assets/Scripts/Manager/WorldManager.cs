@@ -25,6 +25,8 @@ public class WorldManager : MonoBehaviour
     private List<Renderer> extraRenderer;
     [SerializeField]
     private float transitionTime;
+    [SerializeField]
+    private float transitionTimeToReal;
     public float materialColorSpeed;
 
     [Header("World Reference")]
@@ -46,6 +48,8 @@ public class WorldManager : MonoBehaviour
     [SerializeField]
     [ColorUsage(true, true)]
     private Color triggeredColorTwo;
+    [SerializeField]
+    private float shrinkExpandFactor;
 
     [Header("DEBUG ONLY")]
     [SerializeField]
@@ -59,6 +63,7 @@ public class WorldManager : MonoBehaviour
 
     private bool triggerCommutator = false;
     private List<Renderer> renderersList;
+    private bool init = true;
 
     private void Awake()
     {
@@ -146,24 +151,27 @@ public class WorldManager : MonoBehaviour
 
     private void LoadRealWorld()
     {
-        Debug.Log("LOAD REAL WORLD NOT YET IMPLEMENTED");
-        if (debugMode)
+        if (!init)
         {
-            StartCoroutine(MaterialsLerpDebug(realWorldColor));
-        }
-        else
-        {
-            StartCoroutine(ToRealLerp());
-        }
+            if (debugMode)
+            {
+                StartCoroutine(MaterialsLerpDebug(realWorldColor));
+            }
+            else
+            {
+                StartCoroutine(ToRealLerp());
+            }
 
-        foreach (Renderer temp in renderersList)
-        {
-            NetShaderAnimation nsa = temp.GetComponent<NetShaderAnimation>();
-            nsa.SetDoLerp(false);
+            foreach (Renderer temp in renderersList)
+            {
+                NetShaderAnimation nsa = temp.GetComponent<NetShaderAnimation>();
+                nsa.SetDoLerp(false);
+            }
         }
-
         if (realWorldReference)
             realWorldReference.SetActive(true);
+
+        init = false;
     }
 
     private void UnloadRealWorld()
@@ -210,6 +218,10 @@ public class WorldManager : MonoBehaviour
             NetShaderAnimation nsa = temp.GetComponent<NetShaderAnimation>();
             nsa.ChangeTrigger(triggerCommutator);
         }
+
+        Animator sceneAnimator = sceneParent.GetComponent<Animator>();
+        sceneAnimator.SetFloat("Speed", shrinkExpandFactor);
+        sceneAnimator.SetTrigger(triggerCommutator ? "Expand" : "Shrink");
     }
 
     private IEnumerator ToNetLerp()
@@ -247,12 +259,12 @@ public class WorldManager : MonoBehaviour
         }
 
         float t = 0f;
-        while (t < transitionTime)
+        while (t < transitionTimeToReal)
         {
             foreach (Renderer r in renderersList)
             {
                 //r.material.SetFloat("_DissolveAmount", 1 - (t / transitionTime));
-                r.sharedMaterial.SetFloat("_DissolveAmount", 1 - (t / transitionTime));
+                r.sharedMaterial.SetFloat("_DissolveAmount", 1 - (t / transitionTimeToReal));
             }
 
             yield return new WaitForEndOfFrame();
