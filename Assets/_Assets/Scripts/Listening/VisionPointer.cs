@@ -34,10 +34,14 @@ public class VisionPointer : MonoBehaviour
     private bool eyeTemp;
     private float eyeTimestamp;
 
-    [Header ("Objects at muffle range")]
     private Collider[] unmuffulableObjects;
+    [Header ("Objects at muffle range")]
     [SerializeField] private float muffleDistance = 1f;
     [SerializeField] private LayerMask muffleLayerMask;
+/*
+    [Header("Vision gun")]
+    [SerializeField] private bool lockTemp;
+    [SerializeField] private float lockTemp;*/
 
     private void Start()
     {
@@ -110,6 +114,8 @@ public class VisionPointer : MonoBehaviour
                 closedEye = false;
             }
         }
+
+       
     }
 
     private void TriggerClosedEye()
@@ -131,9 +137,13 @@ public class VisionPointer : MonoBehaviour
         unmuffulableObjects = null;
     }
 
-    private void CheckHandState()
+    public bool CheckRightEyeClosed()
     {
-
+        if (faceExpression[OVRFaceExpressions.FaceExpression.EyesClosedR] >= closedEyeValue && faceExpression[OVRFaceExpressions.FaceExpression.EyesClosedL] < closedEyeValue)
+        {
+            return true;
+        }
+        return false;
     }
 
     private void OnDrawGizmosSelected()
