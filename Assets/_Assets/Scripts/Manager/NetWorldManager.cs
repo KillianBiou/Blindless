@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class NetWorldManager : MonoBehaviour
 {
+
     private List<WorldItem> worldItems = new List<WorldItem>();
     public static NetWorldManager Instance;
 
