@@ -430,7 +430,7 @@ GameObject:
   - component: {fileID: 238461288}
   - component: {fileID: 238461287}
   - component: {fileID: 238461286}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Cube (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -446,7 +446,7 @@ Transform:
   m_GameObject: {fileID: 238461284}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.2363832, y: 5.5192313, z: 0.60405064}
+  m_LocalPosition: {x: 2.2363832, y: 5.5192313, z: -1.71}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1067,7 +1067,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09cced76cc649e444abf5f01db84a585, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InitialPosition: 1
+  InitialPosition: 2
   textCommitField: {fileID: 0}
   leftControllerRootTransform: {fileID: 0}
   leftControllerDirectTransform: {fileID: 0}
@@ -1151,19 +1151,19 @@ MonoBehaviour:
   version: 1
 --- !u!4 &430539968
 Transform:
-  m_ObjectHideFlags: 8
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 430539965}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
+  m_LocalPosition: {x: 0, y: 0.6, z: 0.15}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
 --- !u!114 &455339324 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4852869661765758724, guid: f731aa7dec67a7f4e989ae285b23e9a1, type: 3}
@@ -1189,7 +1189,7 @@ GameObject:
   - component: {fileID: 567473518}
   - component: {fileID: 567473517}
   - component: {fileID: 567473516}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1205,7 +1205,7 @@ Transform:
   m_GameObject: {fileID: 567473514}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.026383162, y: 7.5192313, z: 0.60405064}
+  m_LocalPosition: {x: -2.87, y: 8.53, z: 0.60405064}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2111,7 +2111,7 @@ GameObject:
   - component: {fileID: 919428024}
   - component: {fileID: 919428023}
   - component: {fileID: 919428022}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Cube (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2127,7 +2127,7 @@ Transform:
   m_GameObject: {fileID: 919428020}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 2.2363832, y: 7.5192313, z: 0.60405064}
+  m_LocalPosition: {x: 1.65, y: 8.59, z: 0.60405064}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3044,6 +3044,14 @@ PrefabInstance:
       propertyPath: objectToMove
       value: 
       objectReference: {fileID: 1398420247}
+    - target: {fileID: 3160489659591797987, guid: f731aa7dec67a7f4e989ae285b23e9a1, type: 3}
+      propertyPath: lockDuration
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3160489659591797987, guid: f731aa7dec67a7f4e989ae285b23e9a1, type: 3}
+      propertyPath: objectToMove
+      value: 
+      objectReference: {fileID: 1398420247}
     - target: {fileID: 3203985760643665928, guid: f731aa7dec67a7f4e989ae285b23e9a1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3088,10 +3096,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: '[BuildingBlock] Camera Rig'
       objectReference: {fileID: 0}
-    - target: {fileID: 7993722969189819325, guid: f731aa7dec67a7f4e989ae285b23e9a1, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: f43f529618c6a364cabd3e3e1f30faff, type: 2}
+    - target: {fileID: 7990909770918656225, guid: f731aa7dec67a7f4e989ae285b23e9a1, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
