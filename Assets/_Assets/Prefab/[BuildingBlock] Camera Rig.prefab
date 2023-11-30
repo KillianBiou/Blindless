@@ -9803,6 +9803,7 @@ GameObject:
   - component: {fileID: 1535922225593137784}
   - component: {fileID: 699172237760144096}
   - component: {fileID: 3160489659591797987}
+  - component: {fileID: 2209787712246489896}
   m_Layer: 0
   m_Name: '[BuildingBlock] Camera Rig'
   m_TagString: Untagged
@@ -9967,7 +9968,7 @@ MonoBehaviour:
   objectToMove: {fileID: 0}
   targetLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 192
   muffleDistance: 1.5
   muffleLayerMask:
     serializedVersion: 2
@@ -10007,6 +10008,24 @@ MonoBehaviour:
     m_Bits: 256
   leftEyeTransform: {fileID: 4455409130072089802}
   lockDuration: 3
+--- !u!114 &2209787712246489896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5174912668068730233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 736bd6d7846dbba4bbc7b8cc9e193efa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  thumb1: {fileID: 2646365111907776699}
+  thumb2: {fileID: 7511146669753364181}
+  index1: {fileID: 5046171278652317332}
+  index2: {fileID: 1170738074337424160}
+  fingerCollisionThreshold: 0.1
+  lockDuration: 2
 --- !u!1 &5179068040846732546
 GameObject:
   m_ObjectHideFlags: 0
