@@ -55,10 +55,12 @@ Material:
     - _DissolveScale: 30
     - _GitchVelocity: 5
     - _GlitchDensity: 0
+    - _GlitchDensitySinMultiplier: 1
+    - _GlitchDensitySinSpeed: 1
     - _Metallic: 0
     - _NormalStrenght: 0
     - _Smoothness: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 0}
-    - _GlitchColor: {r: 0, g: 0, b: 0, a: 0}
+    - _GlitchColor: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []

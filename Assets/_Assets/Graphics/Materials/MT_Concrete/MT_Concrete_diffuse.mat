@@ -59,7 +59,7 @@ Material:
     m_Floats:
     - _BUILTIN_QueueControl: 0
     - _BUILTIN_QueueOffset: 0
-    - _DissolveAmount: 0
+    - _DissolveAmount: 0.787
     - _DissolveScale: 2
     - _DissolveStrenght: 1
     - _GitchVelocity: 6

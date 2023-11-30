@@ -14,6 +14,8 @@ Shader "Shader Graphs/Shader_dissolve"
         _GlitchDensity("GlitchDensity", Float) = 0
         _GitchVelocity("GitchVelocity", Float) = 5
         [HDR]_GlitchColor("GlitchColor", Color) = (0, 0, 0, 0)
+        _GlitchDensitySinMultiplier("GlitchDensitySinMultiplier", Float) = 1
+        _GlitchDensitySinSpeed("GlitchDensitySinSpeed", Float) = 1
         [NonModifiableTextureData][NoScaleOffset]_ParallaxMapping_4f59d0b1eb0d42c795f6bdaeeec486a5_Heightmap_1_Texture2D("Texture2D", 2D) = "black" {}
         [NonModifiableTextureData][NoScaleOffset]_SampleTexture2D_47bca66db1d0424281736091037c4228_Texture_1_Texture2D("Texture2D", 2D) = "white" {}
         [NonModifiableTextureData][NoScaleOffset]_SampleTexture2D_aa9793440f2d4df988f5ebcbec4e4f65_Texture_1_Texture2D("Texture2D", 2D) = "white" {}
@@ -281,6 +283,7 @@ Shader "Shader Graphs/Shader_dissolve"
         float4 _ParallaxMapping_4f59d0b1eb0d42c795f6bdaeeec486a5_Heightmap_1_Texture2D_TexelSize;
         float4 _SampleTexture2D_47bca66db1d0424281736091037c4228_Texture_1_Texture2D_TexelSize;
         float4 _SampleTexture2D_aa9793440f2d4df988f5ebcbec4e4f65_Texture_1_Texture2D_TexelSize;
+        float _GlitchDensitySinSpeed;
         float4 _Albedo_TexelSize;
         float4 _AO_TexelSize;
         float4 _BaseColor;
@@ -293,6 +296,7 @@ Shader "Shader Graphs/Shader_dissolve"
         float _GlitchDensity;
         float _GitchVelocity;
         float4 _GlitchColor;
+        float _GlitchDensitySinMultiplier;
         CBUFFER_END
         
         
@@ -370,6 +374,21 @@ Shader "Shader Graphs/Shader_dissolve"
         void Unity_FresnelEffect_float(float3 Normal, float3 ViewDir, float Power, out float Out)
         {
             Out = pow((1.0 - saturate(dot(normalize(Normal), normalize(ViewDir)))), Power);
+        }
+        
+        void Unity_Multiply_float_float(float A, float B, out float Out)
+        {
+            Out = A * B;
+        }
+        
+        void Unity_Sine_float(float In, out float Out)
+        {
+            Out = sin(In);
+        }
+        
+        void Unity_Add_float(float A, float B, out float Out)
+        {
+            Out = A + B;
         }
         
         // Custom interpolators pre vertex
@@ -489,6 +508,16 @@ Shader "Shader Graphs/Shader_dissolve"
             float _SampleTexture2D_55d7bf8a2593408ba27a58b5447b5a05_B_6_Float = _SampleTexture2D_55d7bf8a2593408ba27a58b5447b5a05_RGBA_0_Vector4.b;
             float _SampleTexture2D_55d7bf8a2593408ba27a58b5447b5a05_A_7_Float = _SampleTexture2D_55d7bf8a2593408ba27a58b5447b5a05_RGBA_0_Vector4.a;
             float _Property_aad91b997d784a3cb22f2e74ee31c3c4_Out_0_Float = _GlitchDensity;
+            float _Property_dff9255346e14a0db2c3e54cf66e421c_Out_0_Float = _GlitchDensitySinSpeed;
+            float _Multiply_2e7d99b939b1405abe4e1976f1d216d0_Out_2_Float;
+            Unity_Multiply_float_float(IN.TimeParameters.x, _Property_dff9255346e14a0db2c3e54cf66e421c_Out_0_Float, _Multiply_2e7d99b939b1405abe4e1976f1d216d0_Out_2_Float);
+            float _Sine_be60be72430b4bcb928b8a36ab28b238_Out_1_Float;
+            Unity_Sine_float(_Multiply_2e7d99b939b1405abe4e1976f1d216d0_Out_2_Float, _Sine_be60be72430b4bcb928b8a36ab28b238_Out_1_Float);
+            float _Property_41321bf5c4044152aa6b688a8201e5cd_Out_0_Float = _GlitchDensitySinMultiplier;
+            float _Multiply_832ae4f1aa0e43a7818ad7082f95dbd0_Out_2_Float;
+            Unity_Multiply_float_float(_Sine_be60be72430b4bcb928b8a36ab28b238_Out_1_Float, _Property_41321bf5c4044152aa6b688a8201e5cd_Out_0_Float, _Multiply_832ae4f1aa0e43a7818ad7082f95dbd0_Out_2_Float);
+            float _Add_d2baab1cb3e6493c9064e7714d069df5_Out_2_Float;
+            Unity_Add_float(_Property_aad91b997d784a3cb22f2e74ee31c3c4_Out_0_Float, _Multiply_832ae4f1aa0e43a7818ad7082f95dbd0_Out_2_Float, _Add_d2baab1cb3e6493c9064e7714d069df5_Out_2_Float);
             surface.BaseColor = (_Add_49cfa1236ff443b481998d232e4f1f3b_Out_2_Vector4.xyz);
             surface.NormalTS = _Multiply_03db21b8b52c40eabebcfc1958b471f9_Out_2_Vector3;
             surface.Emission = (_Multiply_1bfc26c299c04f93b97db7f856fe3a2d_Out_2_Vector4.xyz);
@@ -496,7 +525,7 @@ Shader "Shader Graphs/Shader_dissolve"
             surface.Smoothness = _Property_d079ec0ddaee4485b1bc73929a1a7940_Out_0_Float;
             surface.Occlusion = (_SampleTexture2D_55d7bf8a2593408ba27a58b5447b5a05_RGBA_0_Vector4).x;
             surface.Alpha = (_OneMinus_267aafc118084a6b8c9ec98547427b1d_Out_1_Vector4).x;
-            surface.AlphaClipThreshold = _Property_aad91b997d784a3cb22f2e74ee31c3c4_Out_0_Float;
+            surface.AlphaClipThreshold = _Add_d2baab1cb3e6493c9064e7714d069df5_Out_2_Float;
             return surface;
         }
         
@@ -883,6 +912,7 @@ Shader "Shader Graphs/Shader_dissolve"
         float4 _ParallaxMapping_4f59d0b1eb0d42c795f6bdaeeec486a5_Heightmap_1_Texture2D_TexelSize;
         float4 _SampleTexture2D_47bca66db1d0424281736091037c4228_Texture_1_Texture2D_TexelSize;
         float4 _SampleTexture2D_aa9793440f2d4df988f5ebcbec4e4f65_Texture_1_Texture2D_TexelSize;
+        float _GlitchDensitySinSpeed;
         float4 _Albedo_TexelSize;
         float4 _AO_TexelSize;
         float4 _BaseColor;
@@ -895,6 +925,7 @@ Shader "Shader Graphs/Shader_dissolve"
         float _GlitchDensity;
         float _GitchVelocity;
         float4 _GlitchColor;
+        float _GlitchDensitySinMultiplier;
         CBUFFER_END
         
         
@@ -972,6 +1003,21 @@ Shader "Shader Graphs/Shader_dissolve"
         void Unity_FresnelEffect_float(float3 Normal, float3 ViewDir, float Power, out float Out)
         {
             Out = pow((1.0 - saturate(dot(normalize(Normal), normalize(ViewDir)))), Power);
+        }
+        
+        void Unity_Multiply_float_float(float A, float B, out float Out)
+        {
+            Out = A * B;
+        }
+        
+        void Unity_Sine_float(float In, out float Out)
+        {
+            Out = sin(In);
+        }
+        
+        void Unity_Add_float(float A, float B, out float Out)
+        {
+            Out = A + B;
         }
         
         // Custom interpolators pre vertex
@@ -1091,6 +1137,16 @@ Shader "Shader Graphs/Shader_dissolve"
             float _SampleTexture2D_55d7bf8a2593408ba27a58b5447b5a05_B_6_Float = _SampleTexture2D_55d7bf8a2593408ba27a58b5447b5a05_RGBA_0_Vector4.b;
             float _SampleTexture2D_55d7bf8a2593408ba27a58b5447b5a05_A_7_Float = _SampleTexture2D_55d7bf8a2593408ba27a58b5447b5a05_RGBA_0_Vector4.a;
             float _Property_aad91b997d784a3cb22f2e74ee31c3c4_Out_0_Float = _GlitchDensity;
+            float _Property_dff9255346e14a0db2c3e54cf66e421c_Out_0_Float = _GlitchDensitySinSpeed;
+            float _Multiply_2e7d99b939b1405abe4e1976f1d216d0_Out_2_Float;
+            Unity_Multiply_float_float(IN.TimeParameters.x, _Property_dff9255346e14a0db2c3e54cf66e421c_Out_0_Float, _Multiply_2e7d99b939b1405abe4e1976f1d216d0_Out_2_Float);
+            float _Sine_be60be72430b4bcb928b8a36ab28b238_Out_1_Float;
+            Unity_Sine_float(_Multiply_2e7d99b939b1405abe4e1976f1d216d0_Out_2_Float, _Sine_be60be72430b4bcb928b8a36ab28b238_Out_1_Float);
+            float _Property_41321bf5c4044152aa6b688a8201e5cd_Out_0_Float = _GlitchDensitySinMultiplier;
+            float _Multiply_832ae4f1aa0e43a7818ad7082f95dbd0_Out_2_Float;
+            Unity_Multiply_float_float(_Sine_be60be72430b4bcb928b8a36ab28b238_Out_1_Float, _Property_41321bf5c4044152aa6b688a8201e5cd_Out_0_Float, _Multiply_832ae4f1aa0e43a7818ad7082f95dbd0_Out_2_Float);
+            float _Add_d2baab1cb3e6493c9064e7714d069df5_Out_2_Float;
+            Unity_Add_float(_Property_aad91b997d784a3cb22f2e74ee31c3c4_Out_0_Float, _Multiply_832ae4f1aa0e43a7818ad7082f95dbd0_Out_2_Float, _Add_d2baab1cb3e6493c9064e7714d069df5_Out_2_Float);
             surface.BaseColor = (_Add_49cfa1236ff443b481998d232e4f1f3b_Out_2_Vector4.xyz);
             surface.NormalTS = _Multiply_03db21b8b52c40eabebcfc1958b471f9_Out_2_Vector3;
             surface.Emission = (_Multiply_1bfc26c299c04f93b97db7f856fe3a2d_Out_2_Vector4.xyz);
@@ -1098,7 +1154,7 @@ Shader "Shader Graphs/Shader_dissolve"
             surface.Smoothness = _Property_d079ec0ddaee4485b1bc73929a1a7940_Out_0_Float;
             surface.Occlusion = (_SampleTexture2D_55d7bf8a2593408ba27a58b5447b5a05_RGBA_0_Vector4).x;
             surface.Alpha = (_OneMinus_267aafc118084a6b8c9ec98547427b1d_Out_1_Vector4).x;
-            surface.AlphaClipThreshold = _Property_aad91b997d784a3cb22f2e74ee31c3c4_Out_0_Float;
+            surface.AlphaClipThreshold = _Add_d2baab1cb3e6493c9064e7714d069df5_Out_2_Float;
             return surface;
         }
         
@@ -1486,6 +1542,7 @@ Shader "Shader Graphs/Shader_dissolve"
         float4 _ParallaxMapping_4f59d0b1eb0d42c795f6bdaeeec486a5_Heightmap_1_Texture2D_TexelSize;
         float4 _SampleTexture2D_47bca66db1d0424281736091037c4228_Texture_1_Texture2D_TexelSize;
         float4 _SampleTexture2D_aa9793440f2d4df988f5ebcbec4e4f65_Texture_1_Texture2D_TexelSize;
+        float _GlitchDensitySinSpeed;
         float4 _Albedo_TexelSize;
         float4 _AO_TexelSize;
         float4 _BaseColor;
@@ -1498,6 +1555,7 @@ Shader "Shader Graphs/Shader_dissolve"
         float _GlitchDensity;
         float _GitchVelocity;
         float4 _GlitchColor;
+        float _GlitchDensitySinMultiplier;
         CBUFFER_END
         
         
@@ -1575,6 +1633,21 @@ Shader "Shader Graphs/Shader_dissolve"
         void Unity_FresnelEffect_float(float3 Normal, float3 ViewDir, float Power, out float Out)
         {
             Out = pow((1.0 - saturate(dot(normalize(Normal), normalize(ViewDir)))), Power);
+        }
+        
+        void Unity_Multiply_float_float(float A, float B, out float Out)
+        {
+            Out = A * B;
+        }
+        
+        void Unity_Sine_float(float In, out float Out)
+        {
+            Out = sin(In);
+        }
+        
+        void Unity_Add_float(float A, float B, out float Out)
+        {
+            Out = A + B;
         }
         
         // Custom interpolators pre vertex
@@ -1694,6 +1767,16 @@ Shader "Shader Graphs/Shader_dissolve"
             float _SampleTexture2D_55d7bf8a2593408ba27a58b5447b5a05_B_6_Float = _SampleTexture2D_55d7bf8a2593408ba27a58b5447b5a05_RGBA_0_Vector4.b;
             float _SampleTexture2D_55d7bf8a2593408ba27a58b5447b5a05_A_7_Float = _SampleTexture2D_55d7bf8a2593408ba27a58b5447b5a05_RGBA_0_Vector4.a;
             float _Property_aad91b997d784a3cb22f2e74ee31c3c4_Out_0_Float = _GlitchDensity;
+            float _Property_dff9255346e14a0db2c3e54cf66e421c_Out_0_Float = _GlitchDensitySinSpeed;
+            float _Multiply_2e7d99b939b1405abe4e1976f1d216d0_Out_2_Float;
+            Unity_Multiply_float_float(IN.TimeParameters.x, _Property_dff9255346e14a0db2c3e54cf66e421c_Out_0_Float, _Multiply_2e7d99b939b1405abe4e1976f1d216d0_Out_2_Float);
+            float _Sine_be60be72430b4bcb928b8a36ab28b238_Out_1_Float;
+            Unity_Sine_float(_Multiply_2e7d99b939b1405abe4e1976f1d216d0_Out_2_Float, _Sine_be60be72430b4bcb928b8a36ab28b238_Out_1_Float);
+            float _Property_41321bf5c4044152aa6b688a8201e5cd_Out_0_Float = _GlitchDensitySinMultiplier;
+            float _Multiply_832ae4f1aa0e43a7818ad7082f95dbd0_Out_2_Float;
+            Unity_Multiply_float_float(_Sine_be60be72430b4bcb928b8a36ab28b238_Out_1_Float, _Property_41321bf5c4044152aa6b688a8201e5cd_Out_0_Float, _Multiply_832ae4f1aa0e43a7818ad7082f95dbd0_Out_2_Float);
+            float _Add_d2baab1cb3e6493c9064e7714d069df5_Out_2_Float;
+            Unity_Add_float(_Property_aad91b997d784a3cb22f2e74ee31c3c4_Out_0_Float, _Multiply_832ae4f1aa0e43a7818ad7082f95dbd0_Out_2_Float, _Add_d2baab1cb3e6493c9064e7714d069df5_Out_2_Float);
             surface.BaseColor = (_Add_49cfa1236ff443b481998d232e4f1f3b_Out_2_Vector4.xyz);
             surface.NormalTS = _Multiply_03db21b8b52c40eabebcfc1958b471f9_Out_2_Vector3;
             surface.Emission = (_Multiply_1bfc26c299c04f93b97db7f856fe3a2d_Out_2_Vector4.xyz);
@@ -1701,7 +1784,7 @@ Shader "Shader Graphs/Shader_dissolve"
             surface.Smoothness = _Property_d079ec0ddaee4485b1bc73929a1a7940_Out_0_Float;
             surface.Occlusion = (_SampleTexture2D_55d7bf8a2593408ba27a58b5447b5a05_RGBA_0_Vector4).x;
             surface.Alpha = (_OneMinus_267aafc118084a6b8c9ec98547427b1d_Out_1_Vector4).x;
-            surface.AlphaClipThreshold = _Property_aad91b997d784a3cb22f2e74ee31c3c4_Out_0_Float;
+            surface.AlphaClipThreshold = _Add_d2baab1cb3e6493c9064e7714d069df5_Out_2_Float;
             return surface;
         }
         
@@ -2045,6 +2128,7 @@ Shader "Shader Graphs/Shader_dissolve"
         float4 _ParallaxMapping_4f59d0b1eb0d42c795f6bdaeeec486a5_Heightmap_1_Texture2D_TexelSize;
         float4 _SampleTexture2D_47bca66db1d0424281736091037c4228_Texture_1_Texture2D_TexelSize;
         float4 _SampleTexture2D_aa9793440f2d4df988f5ebcbec4e4f65_Texture_1_Texture2D_TexelSize;
+        float _GlitchDensitySinSpeed;
         float4 _Albedo_TexelSize;
         float4 _AO_TexelSize;
         float4 _BaseColor;
@@ -2057,6 +2141,7 @@ Shader "Shader Graphs/Shader_dissolve"
         float _GlitchDensity;
         float _GitchVelocity;
         float4 _GlitchColor;
+        float _GlitchDensitySinMultiplier;
         CBUFFER_END
         
         
@@ -2114,6 +2199,21 @@ Shader "Shader Graphs/Shader_dissolve"
         void Unity_OneMinus_float4(float4 In, out float4 Out)
         {
             Out = 1 - In;
+        }
+        
+        void Unity_Multiply_float_float(float A, float B, out float Out)
+        {
+            Out = A * B;
+        }
+        
+        void Unity_Sine_float(float In, out float Out)
+        {
+            Out = sin(In);
+        }
+        
+        void Unity_Add_float(float A, float B, out float Out)
+        {
+            Out = A + B;
         }
         
         // Custom interpolators pre vertex
@@ -2182,8 +2282,18 @@ Shader "Shader Graphs/Shader_dissolve"
             float4 _OneMinus_267aafc118084a6b8c9ec98547427b1d_Out_1_Vector4;
             Unity_OneMinus_float4(_Multiply_ee440f93325d4faca54b64875b113d69_Out_2_Vector4, _OneMinus_267aafc118084a6b8c9ec98547427b1d_Out_1_Vector4);
             float _Property_aad91b997d784a3cb22f2e74ee31c3c4_Out_0_Float = _GlitchDensity;
+            float _Property_dff9255346e14a0db2c3e54cf66e421c_Out_0_Float = _GlitchDensitySinSpeed;
+            float _Multiply_2e7d99b939b1405abe4e1976f1d216d0_Out_2_Float;
+            Unity_Multiply_float_float(IN.TimeParameters.x, _Property_dff9255346e14a0db2c3e54cf66e421c_Out_0_Float, _Multiply_2e7d99b939b1405abe4e1976f1d216d0_Out_2_Float);
+            float _Sine_be60be72430b4bcb928b8a36ab28b238_Out_1_Float;
+            Unity_Sine_float(_Multiply_2e7d99b939b1405abe4e1976f1d216d0_Out_2_Float, _Sine_be60be72430b4bcb928b8a36ab28b238_Out_1_Float);
+            float _Property_41321bf5c4044152aa6b688a8201e5cd_Out_0_Float = _GlitchDensitySinMultiplier;
+            float _Multiply_832ae4f1aa0e43a7818ad7082f95dbd0_Out_2_Float;
+            Unity_Multiply_float_float(_Sine_be60be72430b4bcb928b8a36ab28b238_Out_1_Float, _Property_41321bf5c4044152aa6b688a8201e5cd_Out_0_Float, _Multiply_832ae4f1aa0e43a7818ad7082f95dbd0_Out_2_Float);
+            float _Add_d2baab1cb3e6493c9064e7714d069df5_Out_2_Float;
+            Unity_Add_float(_Property_aad91b997d784a3cb22f2e74ee31c3c4_Out_0_Float, _Multiply_832ae4f1aa0e43a7818ad7082f95dbd0_Out_2_Float, _Add_d2baab1cb3e6493c9064e7714d069df5_Out_2_Float);
             surface.Alpha = (_OneMinus_267aafc118084a6b8c9ec98547427b1d_Out_1_Vector4).x;
-            surface.AlphaClipThreshold = _Property_aad91b997d784a3cb22f2e74ee31c3c4_Out_0_Float;
+            surface.AlphaClipThreshold = _Add_d2baab1cb3e6493c9064e7714d069df5_Out_2_Float;
             return surface;
         }
         
@@ -2519,6 +2629,7 @@ Shader "Shader Graphs/Shader_dissolve"
         float4 _ParallaxMapping_4f59d0b1eb0d42c795f6bdaeeec486a5_Heightmap_1_Texture2D_TexelSize;
         float4 _SampleTexture2D_47bca66db1d0424281736091037c4228_Texture_1_Texture2D_TexelSize;
         float4 _SampleTexture2D_aa9793440f2d4df988f5ebcbec4e4f65_Texture_1_Texture2D_TexelSize;
+        float _GlitchDensitySinSpeed;
         float4 _Albedo_TexelSize;
         float4 _AO_TexelSize;
         float4 _BaseColor;
@@ -2531,6 +2642,7 @@ Shader "Shader Graphs/Shader_dissolve"
         float _GlitchDensity;
         float _GitchVelocity;
         float4 _GlitchColor;
+        float _GlitchDensitySinMultiplier;
         CBUFFER_END
         
         
@@ -2588,6 +2700,21 @@ Shader "Shader Graphs/Shader_dissolve"
         void Unity_OneMinus_float4(float4 In, out float4 Out)
         {
             Out = 1 - In;
+        }
+        
+        void Unity_Multiply_float_float(float A, float B, out float Out)
+        {
+            Out = A * B;
+        }
+        
+        void Unity_Sine_float(float In, out float Out)
+        {
+            Out = sin(In);
+        }
+        
+        void Unity_Add_float(float A, float B, out float Out)
+        {
+            Out = A + B;
         }
         
         // Custom interpolators pre vertex
@@ -2656,8 +2783,18 @@ Shader "Shader Graphs/Shader_dissolve"
             float4 _OneMinus_267aafc118084a6b8c9ec98547427b1d_Out_1_Vector4;
             Unity_OneMinus_float4(_Multiply_ee440f93325d4faca54b64875b113d69_Out_2_Vector4, _OneMinus_267aafc118084a6b8c9ec98547427b1d_Out_1_Vector4);
             float _Property_aad91b997d784a3cb22f2e74ee31c3c4_Out_0_Float = _GlitchDensity;
+            float _Property_dff9255346e14a0db2c3e54cf66e421c_Out_0_Float = _GlitchDensitySinSpeed;
+            float _Multiply_2e7d99b939b1405abe4e1976f1d216d0_Out_2_Float;
+            Unity_Multiply_float_float(IN.TimeParameters.x, _Property_dff9255346e14a0db2c3e54cf66e421c_Out_0_Float, _Multiply_2e7d99b939b1405abe4e1976f1d216d0_Out_2_Float);
+            float _Sine_be60be72430b4bcb928b8a36ab28b238_Out_1_Float;
+            Unity_Sine_float(_Multiply_2e7d99b939b1405abe4e1976f1d216d0_Out_2_Float, _Sine_be60be72430b4bcb928b8a36ab28b238_Out_1_Float);
+            float _Property_41321bf5c4044152aa6b688a8201e5cd_Out_0_Float = _GlitchDensitySinMultiplier;
+            float _Multiply_832ae4f1aa0e43a7818ad7082f95dbd0_Out_2_Float;
+            Unity_Multiply_float_float(_Sine_be60be72430b4bcb928b8a36ab28b238_Out_1_Float, _Property_41321bf5c4044152aa6b688a8201e5cd_Out_0_Float, _Multiply_832ae4f1aa0e43a7818ad7082f95dbd0_Out_2_Float);
+            float _Add_d2baab1cb3e6493c9064e7714d069df5_Out_2_Float;
+            Unity_Add_float(_Property_aad91b997d784a3cb22f2e74ee31c3c4_Out_0_Float, _Multiply_832ae4f1aa0e43a7818ad7082f95dbd0_Out_2_Float, _Add_d2baab1cb3e6493c9064e7714d069df5_Out_2_Float);
             surface.Alpha = (_OneMinus_267aafc118084a6b8c9ec98547427b1d_Out_1_Vector4).x;
-            surface.AlphaClipThreshold = _Property_aad91b997d784a3cb22f2e74ee31c3c4_Out_0_Float;
+            surface.AlphaClipThreshold = _Add_d2baab1cb3e6493c9064e7714d069df5_Out_2_Float;
             return surface;
         }
         
@@ -2992,6 +3129,7 @@ Shader "Shader Graphs/Shader_dissolve"
         float4 _ParallaxMapping_4f59d0b1eb0d42c795f6bdaeeec486a5_Heightmap_1_Texture2D_TexelSize;
         float4 _SampleTexture2D_47bca66db1d0424281736091037c4228_Texture_1_Texture2D_TexelSize;
         float4 _SampleTexture2D_aa9793440f2d4df988f5ebcbec4e4f65_Texture_1_Texture2D_TexelSize;
+        float _GlitchDensitySinSpeed;
         float4 _Albedo_TexelSize;
         float4 _AO_TexelSize;
         float4 _BaseColor;
@@ -3004,6 +3142,7 @@ Shader "Shader Graphs/Shader_dissolve"
         float _GlitchDensity;
         float _GitchVelocity;
         float4 _GlitchColor;
+        float _GlitchDensitySinMultiplier;
         CBUFFER_END
         
         
@@ -3071,6 +3210,21 @@ Shader "Shader Graphs/Shader_dissolve"
         void Unity_FresnelEffect_float(float3 Normal, float3 ViewDir, float Power, out float Out)
         {
             Out = pow((1.0 - saturate(dot(normalize(Normal), normalize(ViewDir)))), Power);
+        }
+        
+        void Unity_Multiply_float_float(float A, float B, out float Out)
+        {
+            Out = A * B;
+        }
+        
+        void Unity_Sine_float(float In, out float Out)
+        {
+            Out = sin(In);
+        }
+        
+        void Unity_Add_float(float A, float B, out float Out)
+        {
+            Out = A + B;
         }
         
         // Custom interpolators pre vertex
@@ -3166,10 +3320,20 @@ Shader "Shader Graphs/Shader_dissolve"
             float4 _Multiply_1bfc26c299c04f93b97db7f856fe3a2d_Out_2_Vector4;
             Unity_Multiply_float4_float4((_FresnelEffect_59f9fcbec4b34adfa4667bc926335c40_Out_3_Float.xxxx), _Multiply_1d8d89b2cc9a44efba9d8887d4d56cdf_Out_2_Vector4, _Multiply_1bfc26c299c04f93b97db7f856fe3a2d_Out_2_Vector4);
             float _Property_aad91b997d784a3cb22f2e74ee31c3c4_Out_0_Float = _GlitchDensity;
+            float _Property_dff9255346e14a0db2c3e54cf66e421c_Out_0_Float = _GlitchDensitySinSpeed;
+            float _Multiply_2e7d99b939b1405abe4e1976f1d216d0_Out_2_Float;
+            Unity_Multiply_float_float(IN.TimeParameters.x, _Property_dff9255346e14a0db2c3e54cf66e421c_Out_0_Float, _Multiply_2e7d99b939b1405abe4e1976f1d216d0_Out_2_Float);
+            float _Sine_be60be72430b4bcb928b8a36ab28b238_Out_1_Float;
+            Unity_Sine_float(_Multiply_2e7d99b939b1405abe4e1976f1d216d0_Out_2_Float, _Sine_be60be72430b4bcb928b8a36ab28b238_Out_1_Float);
+            float _Property_41321bf5c4044152aa6b688a8201e5cd_Out_0_Float = _GlitchDensitySinMultiplier;
+            float _Multiply_832ae4f1aa0e43a7818ad7082f95dbd0_Out_2_Float;
+            Unity_Multiply_float_float(_Sine_be60be72430b4bcb928b8a36ab28b238_Out_1_Float, _Property_41321bf5c4044152aa6b688a8201e5cd_Out_0_Float, _Multiply_832ae4f1aa0e43a7818ad7082f95dbd0_Out_2_Float);
+            float _Add_d2baab1cb3e6493c9064e7714d069df5_Out_2_Float;
+            Unity_Add_float(_Property_aad91b997d784a3cb22f2e74ee31c3c4_Out_0_Float, _Multiply_832ae4f1aa0e43a7818ad7082f95dbd0_Out_2_Float, _Add_d2baab1cb3e6493c9064e7714d069df5_Out_2_Float);
             surface.BaseColor = (_Add_49cfa1236ff443b481998d232e4f1f3b_Out_2_Vector4.xyz);
             surface.Emission = (_Multiply_1bfc26c299c04f93b97db7f856fe3a2d_Out_2_Vector4.xyz);
             surface.Alpha = (_OneMinus_267aafc118084a6b8c9ec98547427b1d_Out_1_Vector4).x;
-            surface.AlphaClipThreshold = _Property_aad91b997d784a3cb22f2e74ee31c3c4_Out_0_Float;
+            surface.AlphaClipThreshold = _Add_d2baab1cb3e6493c9064e7714d069df5_Out_2_Float;
             return surface;
         }
         
@@ -3504,6 +3668,7 @@ Shader "Shader Graphs/Shader_dissolve"
         float4 _ParallaxMapping_4f59d0b1eb0d42c795f6bdaeeec486a5_Heightmap_1_Texture2D_TexelSize;
         float4 _SampleTexture2D_47bca66db1d0424281736091037c4228_Texture_1_Texture2D_TexelSize;
         float4 _SampleTexture2D_aa9793440f2d4df988f5ebcbec4e4f65_Texture_1_Texture2D_TexelSize;
+        float _GlitchDensitySinSpeed;
         float4 _Albedo_TexelSize;
         float4 _AO_TexelSize;
         float4 _BaseColor;
@@ -3516,6 +3681,7 @@ Shader "Shader Graphs/Shader_dissolve"
         float _GlitchDensity;
         float _GitchVelocity;
         float4 _GlitchColor;
+        float _GlitchDensitySinMultiplier;
         CBUFFER_END
         
         
@@ -3573,6 +3739,21 @@ Shader "Shader Graphs/Shader_dissolve"
         void Unity_OneMinus_float4(float4 In, out float4 Out)
         {
             Out = 1 - In;
+        }
+        
+        void Unity_Multiply_float_float(float A, float B, out float Out)
+        {
+            Out = A * B;
+        }
+        
+        void Unity_Sine_float(float In, out float Out)
+        {
+            Out = sin(In);
+        }
+        
+        void Unity_Add_float(float A, float B, out float Out)
+        {
+            Out = A + B;
         }
         
         // Custom interpolators pre vertex
@@ -3641,8 +3822,18 @@ Shader "Shader Graphs/Shader_dissolve"
             float4 _OneMinus_267aafc118084a6b8c9ec98547427b1d_Out_1_Vector4;
             Unity_OneMinus_float4(_Multiply_ee440f93325d4faca54b64875b113d69_Out_2_Vector4, _OneMinus_267aafc118084a6b8c9ec98547427b1d_Out_1_Vector4);
             float _Property_aad91b997d784a3cb22f2e74ee31c3c4_Out_0_Float = _GlitchDensity;
+            float _Property_dff9255346e14a0db2c3e54cf66e421c_Out_0_Float = _GlitchDensitySinSpeed;
+            float _Multiply_2e7d99b939b1405abe4e1976f1d216d0_Out_2_Float;
+            Unity_Multiply_float_float(IN.TimeParameters.x, _Property_dff9255346e14a0db2c3e54cf66e421c_Out_0_Float, _Multiply_2e7d99b939b1405abe4e1976f1d216d0_Out_2_Float);
+            float _Sine_be60be72430b4bcb928b8a36ab28b238_Out_1_Float;
+            Unity_Sine_float(_Multiply_2e7d99b939b1405abe4e1976f1d216d0_Out_2_Float, _Sine_be60be72430b4bcb928b8a36ab28b238_Out_1_Float);
+            float _Property_41321bf5c4044152aa6b688a8201e5cd_Out_0_Float = _GlitchDensitySinMultiplier;
+            float _Multiply_832ae4f1aa0e43a7818ad7082f95dbd0_Out_2_Float;
+            Unity_Multiply_float_float(_Sine_be60be72430b4bcb928b8a36ab28b238_Out_1_Float, _Property_41321bf5c4044152aa6b688a8201e5cd_Out_0_Float, _Multiply_832ae4f1aa0e43a7818ad7082f95dbd0_Out_2_Float);
+            float _Add_d2baab1cb3e6493c9064e7714d069df5_Out_2_Float;
+            Unity_Add_float(_Property_aad91b997d784a3cb22f2e74ee31c3c4_Out_0_Float, _Multiply_832ae4f1aa0e43a7818ad7082f95dbd0_Out_2_Float, _Add_d2baab1cb3e6493c9064e7714d069df5_Out_2_Float);
             surface.Alpha = (_OneMinus_267aafc118084a6b8c9ec98547427b1d_Out_1_Vector4).x;
-            surface.AlphaClipThreshold = _Property_aad91b997d784a3cb22f2e74ee31c3c4_Out_0_Float;
+            surface.AlphaClipThreshold = _Add_d2baab1cb3e6493c9064e7714d069df5_Out_2_Float;
             return surface;
         }
         
@@ -3975,6 +4166,7 @@ Shader "Shader Graphs/Shader_dissolve"
         float4 _ParallaxMapping_4f59d0b1eb0d42c795f6bdaeeec486a5_Heightmap_1_Texture2D_TexelSize;
         float4 _SampleTexture2D_47bca66db1d0424281736091037c4228_Texture_1_Texture2D_TexelSize;
         float4 _SampleTexture2D_aa9793440f2d4df988f5ebcbec4e4f65_Texture_1_Texture2D_TexelSize;
+        float _GlitchDensitySinSpeed;
         float4 _Albedo_TexelSize;
         float4 _AO_TexelSize;
         float4 _BaseColor;
@@ -3987,6 +4179,7 @@ Shader "Shader Graphs/Shader_dissolve"
         float _GlitchDensity;
         float _GitchVelocity;
         float4 _GlitchColor;
+        float _GlitchDensitySinMultiplier;
         CBUFFER_END
         
         
@@ -4044,6 +4237,21 @@ Shader "Shader Graphs/Shader_dissolve"
         void Unity_OneMinus_float4(float4 In, out float4 Out)
         {
             Out = 1 - In;
+        }
+        
+        void Unity_Multiply_float_float(float A, float B, out float Out)
+        {
+            Out = A * B;
+        }
+        
+        void Unity_Sine_float(float In, out float Out)
+        {
+            Out = sin(In);
+        }
+        
+        void Unity_Add_float(float A, float B, out float Out)
+        {
+            Out = A + B;
         }
         
         // Custom interpolators pre vertex
@@ -4112,8 +4320,18 @@ Shader "Shader Graphs/Shader_dissolve"
             float4 _OneMinus_267aafc118084a6b8c9ec98547427b1d_Out_1_Vector4;
             Unity_OneMinus_float4(_Multiply_ee440f93325d4faca54b64875b113d69_Out_2_Vector4, _OneMinus_267aafc118084a6b8c9ec98547427b1d_Out_1_Vector4);
             float _Property_aad91b997d784a3cb22f2e74ee31c3c4_Out_0_Float = _GlitchDensity;
+            float _Property_dff9255346e14a0db2c3e54cf66e421c_Out_0_Float = _GlitchDensitySinSpeed;
+            float _Multiply_2e7d99b939b1405abe4e1976f1d216d0_Out_2_Float;
+            Unity_Multiply_float_float(IN.TimeParameters.x, _Property_dff9255346e14a0db2c3e54cf66e421c_Out_0_Float, _Multiply_2e7d99b939b1405abe4e1976f1d216d0_Out_2_Float);
+            float _Sine_be60be72430b4bcb928b8a36ab28b238_Out_1_Float;
+            Unity_Sine_float(_Multiply_2e7d99b939b1405abe4e1976f1d216d0_Out_2_Float, _Sine_be60be72430b4bcb928b8a36ab28b238_Out_1_Float);
+            float _Property_41321bf5c4044152aa6b688a8201e5cd_Out_0_Float = _GlitchDensitySinMultiplier;
+            float _Multiply_832ae4f1aa0e43a7818ad7082f95dbd0_Out_2_Float;
+            Unity_Multiply_float_float(_Sine_be60be72430b4bcb928b8a36ab28b238_Out_1_Float, _Property_41321bf5c4044152aa6b688a8201e5cd_Out_0_Float, _Multiply_832ae4f1aa0e43a7818ad7082f95dbd0_Out_2_Float);
+            float _Add_d2baab1cb3e6493c9064e7714d069df5_Out_2_Float;
+            Unity_Add_float(_Property_aad91b997d784a3cb22f2e74ee31c3c4_Out_0_Float, _Multiply_832ae4f1aa0e43a7818ad7082f95dbd0_Out_2_Float, _Add_d2baab1cb3e6493c9064e7714d069df5_Out_2_Float);
             surface.Alpha = (_OneMinus_267aafc118084a6b8c9ec98547427b1d_Out_1_Vector4).x;
-            surface.AlphaClipThreshold = _Property_aad91b997d784a3cb22f2e74ee31c3c4_Out_0_Float;
+            surface.AlphaClipThreshold = _Add_d2baab1cb3e6493c9064e7714d069df5_Out_2_Float;
             return surface;
         }
         
