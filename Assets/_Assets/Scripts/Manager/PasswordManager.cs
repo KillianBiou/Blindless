@@ -3,23 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class TextValidation : MonoBehaviour
+public class PasswordManager : MonoBehaviour
 {
     [SerializeField] private string password = "cacahuete";
     [SerializeField] private TMP_Text passwordText;
 
     private string answer = "";
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [SerializeField] private Animator hatchAnimator;
 
     public void AddStringToPassword(string text)
     {
@@ -42,8 +33,7 @@ public class TextValidation : MonoBehaviour
     {
         if (answer == password)
         {
-            gameObject.SetActive(false);
-            Debug.Log("gagné");
+            Win();
         }
         else
         {
@@ -56,5 +46,13 @@ public class TextValidation : MonoBehaviour
     private void UpdateDisplay()
     {
         passwordText.text = answer;
+    }
+
+    private void Win()
+    {
+        this.enabled = false;
+        hatchAnimator.SetTrigger("Open");
+        NetWorldManager.Instance.EscalatePrivilege();
+        TransfoManager.instance.StartTransfo();
     }
 }

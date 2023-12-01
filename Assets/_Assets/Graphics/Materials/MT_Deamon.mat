@@ -107,7 +107,9 @@ Material:
     - _DissolveScale: 4.38
     - _DstBlend: 0
     - _GitchVelocity: 2
-    - _GlitchDensity: 0.5
+    - _GlitchDensity: 0
+    - _GlitchDensitySinMultiplier: 0
+    - _GlitchDensitySinSpeed: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1

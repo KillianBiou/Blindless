@@ -11,9 +11,13 @@ public class DiscussionManager : MonoBehaviour
     private AudioLowPassFilter lowPassFilter;
 
     private bool muffled = true;
+
+    private AudioSource mAudioSource;
     // Start is called before the first frame update
     void Start()
     {
+        mAudioSource = GetComponent<AudioSource>();
+
         if (!TryGetComponent<AudioLowPassFilter>(out lowPassFilter))
         {
             lowPassFilter = gameObject.AddComponent<AudioLowPassFilter>();
@@ -25,16 +29,6 @@ public class DiscussionManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            muffled = false;
-        }
-
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            muffled = true;
-        }
-
         float currentCutoffFrequency = lowPassFilter.cutoffFrequency;
 
         if (!muffled)
@@ -50,7 +44,12 @@ public class DiscussionManager : MonoBehaviour
 
     public void MuffleDiscussion(bool value)
     {
-        Debug.Log("muffle");
+        if (!value)
+        {
+            mAudioSource.Stop();
+            mAudioSource.Play();
+        }
+
         muffled = value;
     }
 }

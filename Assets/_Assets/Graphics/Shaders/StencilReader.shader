@@ -2,7 +2,7 @@ Shader "Unlit/StencilReader"
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
+        _MainTex ("Texture", 2D) = "red" {}
         _StencilValue ("Stencil value", Range(0,255)) = 0
     }
     SubShader

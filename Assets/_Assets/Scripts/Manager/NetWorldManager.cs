@@ -1,15 +1,37 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class NetWorldManager : MonoBehaviour
 {
+    [Header("References")]
+    [SerializeField]
+    private TextMeshProUGUI currentAccessText;
+
+    [SerializeField]
+    private GameObject firstNetObjectives;
+    [SerializeField]
+    private GameObject secondNetObjectives;
+
     private List<WorldItem> worldItems = new List<WorldItem>();
     public static NetWorldManager Instance;
+
+    private NetAccess currentAccess;
+    private bool triggerDaemon = false;
 
     private void Awake()
     {
         Instance = this;
+        currentAccess = NetAccess.OUTSIDER;
+        UpdateText();
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyUp(KeyCode.W)) {
+            EscalatePrivilege();
+        }
     }
 
     public void Register(WorldItem item)
@@ -22,6 +44,12 @@ public class NetWorldManager : MonoBehaviour
         foreach (WorldItem item in worldItems) {
             item.OnLoad(duration);
         }
+
+        if(!triggerDaemon && currentAccess == NetAccess.ADMINISTRATOR)
+        {
+            triggerDaemon = true;
+            DeamonManager.instance.StartGame();
+        }
     }
 
     public void Unload(float duration)
@@ -30,5 +58,62 @@ public class NetWorldManager : MonoBehaviour
         {
             item.OnUnload(duration);
         }
+    }
+
+    public void ForceUnload()
+    {
+        foreach(WorldItem item in worldItems)
+        {
+            item.ForceUnload();
+        }
+    }
+
+    public void EscalatePrivilege()
+    {
+        switch (currentAccess)
+        {
+            case NetAccess.OUTSIDER:
+                currentAccess = NetAccess.GUEST;
+                firstNetObjectives.SetActive(false);
+                secondNetObjectives.SetActive(true);
+                break;
+            case NetAccess.GUEST:
+                currentAccess = NetAccess.ADMINISTRATOR;
+                secondNetObjectives.SetActive(false);
+                break;
+            case NetAccess.ADMINISTRATOR:
+                currentAccess = NetAccess.ROOT;
+                break;
+            default:
+                break;
+        }
+        UpdateText();
+    }
+
+    private void UpdateText()
+    {
+        switch (currentAccess)
+        {
+            case NetAccess.OUTSIDER:
+                currentAccessText.text = "OUTSIDER";
+                break;
+            case NetAccess.GUEST:
+                currentAccessText.text = "GUEST";
+                break;
+            case NetAccess.ADMINISTRATOR:
+                currentAccessText.text = "ADMINISTRATOR";
+                break;
+            case NetAccess.ROOT:
+                currentAccessText.text = "ROOT";
+                break;
+        }
+    }
+
+    public enum NetAccess
+    {
+        OUTSIDER,
+        GUEST,
+        ADMINISTRATOR,
+        ROOT
     }
 }

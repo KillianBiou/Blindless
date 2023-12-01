@@ -62,16 +62,18 @@ Material:
     - _DissolveAmount: 0
     - _DissolveScale: 2
     - _DissolveStrenght: 1
-    - _GitchVelocity: 4
-    - _GlitchDensity: 0.5
+    - _GitchVelocity: 6
+    - _GlitchDensity: 0.45
+    - _GlitchDensitySinMultiplier: 0.1
+    - _GlitchDensitySinSpeed: 2
     - _Metallic: 0
-    - _NormalStrenght: 0
+    - _NormalStrenght: 1
     - _OutlineScale: 0.01
     - _OutlineStrenght: 0.5
     - _Smoothness: 0.5
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 0}
-    - _GlitchColor: {r: 0, g: 3.9999995, b: 2.6644065, a: 0}
+    - _GlitchColor: {r: 0, g: 3.9999995, b: 1.6559342, a: 0}
     - _OutlineColor: {r: 0, g: 0.4329896, b: 1, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &670495964448687517
