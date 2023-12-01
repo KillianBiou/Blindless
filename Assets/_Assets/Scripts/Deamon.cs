@@ -11,6 +11,10 @@ public class Deamon : MonoBehaviour
 
     [SerializeField] private Transform target;
 
+    [Header("Weakpoint Parameters")]
+    [SerializeField]
+    private List<GameObject> weakPointList;
+
     private Animator animator;
 
     private float velocity;
@@ -35,6 +39,11 @@ public class Deamon : MonoBehaviour
                 target.GetComponent<Player>().TakeDamage(1);
                 Destroy(gameObject);
             }
+
+            if (!CheckWeakpoints())
+            {
+                Destroy(gameObject);
+            }
         }
     }
 
@@ -45,5 +54,16 @@ public class Deamon : MonoBehaviour
         this.speed = speed;
         this.target = target;
         this.downOffset = downOffset;
+    }
+
+    private bool CheckWeakpoints()
+    {
+        foreach(GameObject weakPoint in weakPointList)
+        {
+            if (weakPoint.activeSelf)
+                return true;
+        }
+
+        return false;
     }
 }

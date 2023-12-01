@@ -66,6 +66,7 @@ public class DeamonManager : MonoBehaviour, PlayerSubscriber
     public void StartGame()
     {
         WorldManager.instance.TriggerNet();
+        PinchGun.instance.SetLockDuration(2f);
         StartCoroutine(RunWave());
     }
 

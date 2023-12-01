@@ -27,12 +27,20 @@ public class PinchGun : MonoBehaviour
     private bool lockTemp = false;
     private float lockTempAlert = 0;
 
+    public static PinchGun instance;
+
     private Collider[] hitColliders;
 
     /*private Camera mainCamera;
     private float initialFOV = 90;
     [SerializeField] private float FOVDelta = 5;*/
     // Start is called before the first frame update
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
     void Start()
     {
         pointer = GetComponent<VisionPointer>();
@@ -89,6 +97,11 @@ public class PinchGun : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public void SetLockDuration(float newDuration)
+    {
+        lockDuration = newDuration;
     }
 
     private void OnDrawGizmosSelected()
