@@ -28,10 +28,17 @@ public class PinchGun : MonoBehaviour
     private float lockTempAlert = 0;
 
     private Collider[] hitColliders;
+
+    private Camera mainCamera;
+    private float initialFOV = 90;
+    [SerializeField] private float FOVDelta = 5;
     // Start is called before the first frame update
     void Start()
     {
         pointer = GetComponent<VisionPointer>();
+
+        mainCamera = Camera.main;
+        initialFOV = mainCamera.fieldOfView;
     }
 
     // Update is called once per frame
@@ -48,6 +55,7 @@ public class PinchGun : MonoBehaviour
                     lockTemp = true;
                     lockTempAlert = Time.time + lockDuration;
                 }
+                mainCamera.fieldOfView = initialFOV + FOVDelta * Mathf.Cos(0.5f * Mathf.PI * (lockTempAlert - Time.time) / lockDuration);
             }
 
             else
@@ -68,6 +76,7 @@ public class PinchGun : MonoBehaviour
             {
                 collider.gameObject.SetActive(false);
             }
+            mainCamera.fieldOfView = initialFOV;
             lockTemp = false;
             TransfoManager.instance.CheckState();
         }

@@ -18,6 +18,8 @@ public class FingerWorldTransitioner : MonoBehaviour
     private bool lockTemp = false;
     private float lockTempAlert = 0;
     private bool canChangeWorld = false;
+    [SerializeField] private Transform eyeTransform;
+    [SerializeField] private float frustrumThreshold = 0.7f;
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +30,11 @@ public class FingerWorldTransitioner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!CheckIfFingersInFrustrum())
+        {
+            return;
+        }
+
         if (CheckFingerFormation())
         {
             if (!lockTemp)
@@ -59,6 +66,18 @@ public class FingerWorldTransitioner : MonoBehaviour
         float indexDistance = Vector3.Distance(index1.position, index2.position);
 
         if (thumbDistance < fingerCollisionThreshold && indexDistance < fingerCollisionThreshold)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private bool CheckIfFingersInFrustrum()
+    {
+        Vector3 handsDirection = thumb1.position - eyeTransform.position;
+        float dot = Vector3.Dot(handsDirection, eyeTransform.forward);
+        Debug.Log(dot);
+        if (dot > frustrumThreshold)
         {
             return true;
         }

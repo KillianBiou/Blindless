@@ -9913,6 +9913,7 @@ MonoBehaviour:
     m_Bits: 256
   leftEyeTransform: {fileID: 4455409130072089802}
   lockDuration: 1
+  FOVDelta: 5
 --- !u!114 &2209787712246489896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9931,6 +9932,8 @@ MonoBehaviour:
   index2: {fileID: 1170738074337424160}
   fingerCollisionThreshold: 0.1
   lockDuration: 1
+  eyeTransform: {fileID: 4455409130072089802}
+  frustrumThreshold: 0.7
 --- !u!1 &5179068040846732546
 GameObject:
   m_ObjectHideFlags: 0
