@@ -15,6 +15,7 @@ public class TransfoManager : MonoBehaviour
 
     private bool hasWin = false;
 
+
     private void Awake()
     {
         if (instance == null)
