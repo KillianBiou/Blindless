@@ -74,7 +74,7 @@ public class FingerWorldTransitioner : MonoBehaviour
 
     private bool CheckIfFingersInFrustrum()
     {
-        Vector3 handsDirection = thumb1.position - eyeTransform.position;
+        Vector3 handsDirection = (thumb1.position - eyeTransform.position).normalized;
         float dot = Vector3.Dot(handsDirection, eyeTransform.forward);
         Debug.Log(dot);
         if (dot > frustrumThreshold)
@@ -82,5 +82,12 @@ public class FingerWorldTransitioner : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(eyeTransform.position, eyeTransform.position + eyeTransform.forward);
+        Gizmos.DrawLine(eyeTransform.position, thumb1.position);
     }
 }
