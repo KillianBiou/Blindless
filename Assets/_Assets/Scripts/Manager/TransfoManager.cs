@@ -11,6 +11,7 @@ public class TransfoManager : MonoBehaviour
     public static TransfoManager instance;
 
     [SerializeField] private TMP_Text transfoText;
+    [SerializeField] private TMP_Text transfoBaseText;
 
     private void Awake()
     {
@@ -30,12 +31,12 @@ public class TransfoManager : MonoBehaviour
         {
             if (go.activeSelf)
             {
-                transfoText.text = $"{count} / {transfoList.Count}";
+                transfoText.text = $"{transfoList.Count - count} / firewall remaining.";
                 return;
             }
             count++;
         }
-        transfoText.text = $"{count} / {transfoList.Count}";
+        transfoText.text = $"{transfoList.Count - count} / firewall remaining.";
         Win();
     }
 
@@ -59,6 +60,13 @@ public class TransfoManager : MonoBehaviour
 
     private void Win()
     {
+        //NetWorldManager.Instance.EscalatePrivilege();
         Debug.Log("transfo win");
+        transfoBaseText.text = "Suffisant privileges, launch escalation for root.";
+    }
+
+    public void LaunchEscalation()
+    {
+
     }
 }

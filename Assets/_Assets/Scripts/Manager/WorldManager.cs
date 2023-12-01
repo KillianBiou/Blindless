@@ -248,6 +248,8 @@ public class WorldManager : MonoBehaviour
                 r.material.SetFloat("_DissolveAmount", t / transitionTime);
             }
 
+            RenderSettings.ambientLight = Color.Lerp(realAmbiant, netAmbiant, t / transitionTimeToReal);
+
             yield return new WaitForEndOfFrame();
             t += Time.deltaTime;
         }
@@ -277,6 +279,8 @@ public class WorldManager : MonoBehaviour
                 //r.material.SetFloat("_DissolveAmount", 1 - (t / transitionTime));
                 r.sharedMaterial.SetFloat("_DissolveAmount", 1 - (t / transitionTimeToReal));
             }
+
+            RenderSettings.ambientLight = Color.Lerp(netAmbiant, realAmbiant, t / transitionTimeToReal);
 
             yield return new WaitForEndOfFrame();
             t += Time.deltaTime;
