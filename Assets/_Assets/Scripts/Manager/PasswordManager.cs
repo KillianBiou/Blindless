@@ -11,17 +11,6 @@ public class PasswordManager : MonoBehaviour
     private string answer = "";
 
     [SerializeField] private Animator hatchAnimator;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void AddStringToPassword(string text)
     {
@@ -63,6 +52,7 @@ public class PasswordManager : MonoBehaviour
     {
         this.enabled = false;
         hatchAnimator.SetTrigger("Open");
+        NetWorldManager.Instance.EscalatePrivilege();
         TransfoManager.instance.StartTransfo();
     }
 }

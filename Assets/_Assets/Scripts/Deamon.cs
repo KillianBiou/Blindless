@@ -30,7 +30,7 @@ public class Deamon : MonoBehaviour
             transform.LookAt(target.position + Vector3.down * downOffset);
             transform.position = Vector3.Lerp(transform.position, target.position + Vector3.down * downOffset, speed * Time.deltaTime);
             lastPos = transform.position;
-            if(Vector3.Distance(transform.position, target.position) < 1f)
+            if(Vector3.Distance(transform.position, target.position) < 20f)
             {
                 target.GetComponent<Player>().TakeDamage(1);
                 Destroy(gameObject);
