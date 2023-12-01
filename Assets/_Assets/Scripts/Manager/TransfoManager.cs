@@ -13,6 +13,8 @@ public class TransfoManager : MonoBehaviour
     [SerializeField] private TMP_Text transfoText;
     [SerializeField] private TMP_Text transfoBaseText;
 
+    private bool hasWin = false;
+
     private void Awake()
     {
         if (instance == null)
@@ -43,11 +45,11 @@ public class TransfoManager : MonoBehaviour
     public void StartTransfo()
     {
         transfoText.gameObject.SetActive(true);
-        CheckState();
         foreach (GameObject t in transfoList)
         {
             t.SetActive(true);
         }
+        CheckState();
     }
     public void StopTransfo()
     {
@@ -60,13 +62,13 @@ public class TransfoManager : MonoBehaviour
 
     private void Win()
     {
-        //NetWorldManager.Instance.EscalatePrivilege();
+        NetWorldManager.Instance.EscalatePrivilege();
+        hasWin = true;
         Debug.Log("transfo win");
         transfoBaseText.text = "Suffisant privileges, launch escalation for root.";
     }
 
     public void LaunchEscalation()
     {
-
     }
 }

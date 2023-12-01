@@ -18,6 +18,7 @@ public class NetWorldManager : MonoBehaviour
     public static NetWorldManager Instance;
 
     private NetAccess currentAccess;
+    private bool triggerDaemon = false;
 
     private void Awake()
     {
@@ -42,6 +43,12 @@ public class NetWorldManager : MonoBehaviour
     {
         foreach (WorldItem item in worldItems) {
             item.OnLoad(duration);
+        }
+
+        if(!triggerDaemon && currentAccess == NetAccess.ADMINISTRATOR)
+        {
+            triggerDaemon = true;
+            DeamonManager.instance.StartGame();
         }
     }
 
@@ -72,6 +79,7 @@ public class NetWorldManager : MonoBehaviour
                 break;
             case NetAccess.GUEST:
                 currentAccess = NetAccess.ADMINISTRATOR;
+                secondNetObjectives.SetActive(false);
                 break;
             case NetAccess.ADMINISTRATOR:
                 currentAccess = NetAccess.ROOT;

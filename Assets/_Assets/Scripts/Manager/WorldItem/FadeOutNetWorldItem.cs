@@ -27,12 +27,14 @@ public class FadeOutNetWorldItem : MonoBehaviour, WorldItem
 
     public void OnLoad(float duration)
     {
-        StartCoroutine(StartFade(duration, 0f, 1f));
+        if (gameObject.activeSelf)
+            StartCoroutine(StartFade(duration, 0f, 1f));
     }
 
     public void OnUnload(float duration)
     {
-        StartCoroutine(StartFade(duration, 1f, 0f));
+        if(gameObject.activeSelf)
+            StartCoroutine(StartFade(duration, 1f, 0f));
     }
 
     private IEnumerator StartFade(float duration, float baseAlpha, float endAlpha)

@@ -219,7 +219,7 @@ public class WorldManager : MonoBehaviour
             netWorldReference.Unload(transitionTime);
     }
 
-    private void TriggerNet() 
+    public void TriggerNet() 
     {
         triggerCommutator = !triggerCommutator;
         foreach (Renderer temp in renderersList)

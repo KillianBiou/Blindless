@@ -9708,6 +9708,7 @@ GameObject:
   - component: {fileID: 699172237760144096}
   - component: {fileID: 3160489659591797987}
   - component: {fileID: 2209787712246489896}
+  - component: {fileID: 3065155508976877278}
   m_Layer: 0
   m_Name: '[BuildingBlock] Camera Rig'
   m_TagString: Untagged
@@ -9913,7 +9914,6 @@ MonoBehaviour:
     m_Bits: 256
   leftEyeTransform: {fileID: 4455409130072089802}
   lockDuration: 1
-  FOVDelta: 5
 --- !u!114 &2209787712246489896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9934,6 +9934,20 @@ MonoBehaviour:
   lockDuration: 1
   eyeTransform: {fileID: 4455409130072089802}
   frustrumThreshold: 0.85
+--- !u!114 &3065155508976877278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5174912668068730233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cb5a3346b066514797ad27ae250eede, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHp: 10
+  hp: 0
 --- !u!1 &5179068040846732546
 GameObject:
   m_ObjectHideFlags: 0
@@ -10169,7 +10183,7 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.3
+  m_Intensity: 0.2
   m_Range: 6
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208

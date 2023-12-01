@@ -37,10 +37,17 @@ public class DeamonManager : MonoBehaviour, PlayerSubscriber
     [SerializeField]
     private float downOffset;
 
+    public static DeamonManager instance;
+
     private Vector3 targetDir;
     private Wave currentWave;
     private Stack<Wave> waveQueue;
     private bool playerDead = false;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     private void Start()
     {
@@ -56,8 +63,9 @@ public class DeamonManager : MonoBehaviour, PlayerSubscriber
         }
     }
 
-    private void StartGame()
+    public void StartGame()
     {
+        WorldManager.instance.TriggerNet();
         StartCoroutine(RunWave());
     }
 
