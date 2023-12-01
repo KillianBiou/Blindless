@@ -76,7 +76,6 @@ public class FingerWorldTransitioner : MonoBehaviour
     {
         Vector3 handsDirection = (thumb1.position - eyeTransform.position).normalized;
         float dot = Vector3.Dot(handsDirection, eyeTransform.forward);
-        Debug.Log(dot);
         if (dot > frustrumThreshold)
         {
             return true;
