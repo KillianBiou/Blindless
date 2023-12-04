@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MT_Concrete_diffuse
+  m_Name: TransformerYellowMat
   m_Shader: {fileID: -6465566751694194690, guid: 6246065f035b4c6448c789ac557d52f5, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -63,7 +63,7 @@ Material:
     - _DissolveScale: 2
     - _DissolveStrenght: 1
     - _GitchVelocity: 6
-    - _GlitchDensity: 0.45
+    - _GlitchDensity: 0
     - _GlitchDensitySinMultiplier: 0.1
     - _GlitchDensitySinSpeed: 2
     - _Metallic: 0
@@ -73,7 +73,7 @@ Material:
     - _Smoothness: 0.5
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 0}
-    - _GlitchColor: {r: 4.456296, g: 4.6853695, b: 0, a: 0}
+    - _GlitchColor: {r: 4.6853695, g: 0, b: 0.14050622, a: 0}
     - _OutlineColor: {r: 0, g: 0.4329896, b: 1, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &670495964448687517
