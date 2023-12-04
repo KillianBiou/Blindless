@@ -300,6 +300,11 @@ public class WorldManager : MonoBehaviour
         yield return null;
     }
 
+    public WorldType GetCurrentWorldType()
+    {
+        return currentWorld;
+    }
+
     private IEnumerator MaterialsLerpDebug(Color newColor)
     {
         // DEBUG LERP

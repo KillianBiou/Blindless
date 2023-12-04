@@ -8,6 +8,8 @@ public class NetWorldManager : MonoBehaviour
     [Header("References")]
     [SerializeField]
     private TextMeshProUGUI currentAccessText;
+    [SerializeField]
+    private Transform keyboard;
 
     [SerializeField]
     private GameObject firstNetObjectives;
@@ -19,11 +21,13 @@ public class NetWorldManager : MonoBehaviour
 
     private NetAccess currentAccess;
     private bool triggerDaemon = false;
+    private Vector3 basePas;
 
     private void Awake()
     {
         Instance = this;
         currentAccess = NetAccess.OUTSIDER;
+        basePas = keyboard.position;
         UpdateText();
     }
 
@@ -50,6 +54,10 @@ public class NetWorldManager : MonoBehaviour
             triggerDaemon = true;
             DeamonManager.instance.StartGame();
         }
+        else
+        {
+            ShowKeyboard();
+        }
     }
 
     public void Unload(float duration)
@@ -58,6 +66,7 @@ public class NetWorldManager : MonoBehaviour
         {
             item.OnUnload(duration);
         }
+        HideKeyboard();
     }
 
     public void ForceUnload()
@@ -66,6 +75,7 @@ public class NetWorldManager : MonoBehaviour
         {
             item.ForceUnload();
         }
+        HideKeyboard();
     }
 
     public void EscalatePrivilege()
@@ -82,6 +92,7 @@ public class NetWorldManager : MonoBehaviour
                 secondNetObjectives.SetActive(false);
                 break;
             case NetAccess.ADMINISTRATOR:
+
                 currentAccess = NetAccess.ROOT;
                 break;
             default:
@@ -108,6 +119,28 @@ public class NetWorldManager : MonoBehaviour
                 break;
         }
     }
+
+    public void CommuteNetStatus()
+    {
+        if (currentAccessText.gameObject.activeInHierarchy)
+        {
+            currentAccessText.transform.parent.gameObject.SetActive(false);
+        }
+        else
+        {
+            currentAccessText.transform.parent.gameObject.SetActive(true);
+        }
+    }
+
+    private void ShowKeyboard()
+    {
+        keyboard.position = basePas;
+    }
+    private void HideKeyboard()
+    {
+        keyboard.position = basePas + Vector3.down * 100f;
+    }
+
 
     public enum NetAccess
     {

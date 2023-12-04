@@ -12,8 +12,6 @@ public class PinchGun : MonoBehaviour
 
     [SerializeField] private GameObject maskObject;
 
-    private VisionPointer pointer;
-
     [Header("Lock parameters")]
     [SerializeField] private Transform objectToMove;
     [SerializeField] private float lockDetectionDistance = 1.5f;
@@ -43,8 +41,6 @@ public class PinchGun : MonoBehaviour
 
     void Start()
     {
-        pointer = GetComponent<VisionPointer>();
-
         /*mainCamera = Camera.main;
         initialFOV = mainCamera.fieldOfView;*/
     }
@@ -52,7 +48,7 @@ public class PinchGun : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (CheckPinch() && pointer.CheckRightEyeClosed())
+        if (CheckPinch() && WorldManager.instance.GetCurrentWorldType() == WorldType.REAL)
         {
             maskObject.SetActive(true);
             hitColliders = Physics.OverlapSphere(objectToMove.position, lockDetectionDistance, destroyableObjectLayerMask);
@@ -102,6 +98,11 @@ public class PinchGun : MonoBehaviour
     public void SetLockDuration(float newDuration)
     {
         lockDuration = newDuration;
+    }
+
+    public void SetLockDistance(float newDistance)
+    {
+       lockDetectionDistance = newDistance;
     }
 
     private void OnDrawGizmosSelected()

@@ -66,7 +66,9 @@ public class DeamonManager : MonoBehaviour, PlayerSubscriber
     public void StartGame()
     {
         WorldManager.instance.TriggerNet();
-        PinchGun.instance.SetLockDuration(2f);
+        PinchGun.instance.SetLockDuration(1f);
+        PinchGun.instance.SetLockDistance(4f);
+        NetWorldManager.Instance.CommuteNetStatus();
         StartCoroutine(RunWave());
     }
 
@@ -88,6 +90,8 @@ public class DeamonManager : MonoBehaviour, PlayerSubscriber
     private void TriggerWin()
     {
         Debug.Log("Daemon Defeated");
+        NetWorldManager.Instance.CommuteNetStatus();
+        WorldManager.instance.TriggerNet();
     }
 
     private void TriggerLose()

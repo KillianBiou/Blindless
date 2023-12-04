@@ -8,12 +8,19 @@ public class StoryManager : MonoBehaviour
     [SerializeField] private List<AudioClip> dialogueAudioClips = new List<AudioClip>();
     private AudioSource audioSource;
 
-    [SerializeField] private GameObject player;
+    [SerializeField] private List<MonoBehaviour> scriptList;
 
     private AudioListener listener;
+
+    private Camera cam;
+
+    [SerializeField] private List<AudioSource> audioSources;
+
+    [SerializeField] private bool debug = false;
     // Start is called before the first frame update
     void Start()
     {
+        cam = Camera.main;
         if (!TryGetComponent<AudioSource>(out audioSource))
         {
             audioSource = gameObject.AddComponent<AudioSource>();
@@ -24,8 +31,9 @@ public class StoryManager : MonoBehaviour
             listener = gameObject.AddComponent<AudioListener>();
         }
         audioSource.loop = false;
-
-        PlayIntro();
+        
+        if (!debug)
+            PlayIntro();
     }
 
     // Update is called once per frame
@@ -39,14 +47,34 @@ public class StoryManager : MonoBehaviour
 
     private void PlayIntro()
     {
-        player.SetActive(false);
+        cam.gameObject.SetActive(false);
+        foreach( var script  in scriptList ) 
+        {
+            script.enabled = false;
+        }
+
+        foreach (var audio in audioSources ) 
+        { 
+        
+            audio.enabled = false;
+        }
         audioSource.clip = dialogueAudioClips[0];
         audioSource.Play();
     }
 
     private void StopIntro()
     {
-        player.SetActive(true);
+        cam.gameObject.SetActive(true);
+        foreach (var script in scriptList)
+        {
+            script.enabled = true;
+        }
+        foreach (var audio in audioSources)
+        {
+
+            audio.enabled = true;
+        }
         audioSource.Stop();
+        listener.enabled = false;
     }
 }
