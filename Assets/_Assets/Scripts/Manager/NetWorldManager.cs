@@ -134,11 +134,18 @@ public class NetWorldManager : MonoBehaviour
 
     private void ShowKeyboard()
     {
-        keyboard.position = basePas;
+        if(keyboard)
+            keyboard.position = basePas;
     }
     private void HideKeyboard()
     {
-        keyboard.position = basePas + Vector3.down * 100f;
+        if(keyboard)
+            keyboard.position = basePas + Vector3.down * 100f;
+    }
+
+    public void DeleteKeyboard()
+    {
+        Destroy(keyboard.gameObject);
     }
 
 
@@ -148,5 +155,10 @@ public class NetWorldManager : MonoBehaviour
         GUEST,
         ADMINISTRATOR,
         ROOT
+    }
+
+    public bool AreDeamonsTriggered()
+    {
+        return triggerDaemon;
     }
 }

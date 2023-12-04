@@ -48,7 +48,7 @@ public class PinchGun : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (CheckPinch() && WorldManager.instance.GetCurrentWorldType() == WorldType.REAL)
+        if (CheckPinch() && (WorldManager.instance.GetCurrentWorldType() == WorldType.REAL || NetWorldManager.Instance.AreDeamonsTriggered()))
         {
             maskObject.SetActive(true);
             hitColliders = Physics.OverlapSphere(objectToMove.position, lockDetectionDistance, destroyableObjectLayerMask);

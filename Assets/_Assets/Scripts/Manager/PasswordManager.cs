@@ -56,6 +56,7 @@ public class PasswordManager : MonoBehaviour
         doorSource.loop = false;
         doorSource.Stop();
         NetWorldManager.Instance.EscalatePrivilege();
+        NetWorldManager.Instance.DeleteKeyboard();
         TransfoManager.instance.StartTransfo();
     }
 }

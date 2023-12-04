@@ -79,7 +79,6 @@ public class WorldManager : MonoBehaviour
     private void Start()
     {
         renderersList = sceneParent.GetComponentsInChildren<Renderer>().ToList();
-        //renderersList.AddRange(extraRenderer);
 
         foreach(Renderer r in renderersList)
         {
@@ -173,8 +172,9 @@ public class WorldManager : MonoBehaviour
 
             foreach (Renderer temp in renderersList)
             {
-                NetShaderAnimation nsa = temp.GetComponent<NetShaderAnimation>();
-                nsa.SetDoLerp(false);
+                NetShaderAnimation nsa;
+                if(temp.TryGetComponent<NetShaderAnimation>(out nsa))
+                    nsa.SetDoLerp(false);
             }
         }
         if (realWorldReference)
@@ -229,7 +229,9 @@ public class WorldManager : MonoBehaviour
         {
             NetShaderAnimation nsa;
             if (temp.TryGetComponent<NetShaderAnimation>(out nsa))
-                nsa.SetDoLerp(false);
+            {
+                nsa.ChangeTrigger(triggerCommutator);
+            }
         }
 
         Animator sceneAnimator = sceneParent.GetComponent<Animator>();
