@@ -139,7 +139,7 @@ public class VisionPointer : MonoBehaviour
 
     public bool CheckRightEyeClosed()
     {
-        if (faceExpression[OVRFaceExpressions.FaceExpression.EyesClosedR] >= closedEyeValue && faceExpression[OVRFaceExpressions.FaceExpression.EyesClosedL] < closedEyeValue)
+        if (faceExpression[OVRFaceExpressions.FaceExpression.EyesClosedR] >= 0.2f && faceExpression[OVRFaceExpressions.FaceExpression.EyesClosedL] < closedEyeValue)
         {
             return true;
         }

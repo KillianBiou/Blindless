@@ -173,5 +173,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lowCutoffFrequency: 250
-  highCutoffFrequency: 1500
+  highCutoffFrequency: 3000
   cutoffFrequencyBlend: 1

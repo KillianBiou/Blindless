@@ -7,6 +7,7 @@ public class PasswordManager : MonoBehaviour
 {
     [SerializeField] private string password = "cacahuete";
     [SerializeField] private TMP_Text passwordText;
+    [SerializeField] private AudioSource doorSource;
 
     private string answer = "";
 
@@ -52,6 +53,8 @@ public class PasswordManager : MonoBehaviour
     {
         this.enabled = false;
         hatchAnimator.SetTrigger("Open");
+        doorSource.loop = false;
+        doorSource.Stop();
         NetWorldManager.Instance.EscalatePrivilege();
         TransfoManager.instance.StartTransfo();
     }
