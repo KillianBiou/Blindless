@@ -48,4 +48,17 @@ public class OverlayManager : MonoBehaviour
     {
         eyeTuto.SetActive(false);
     }
+
+    public IEnumerator FirstTrial(float duration)
+    {
+        ShowEyeTuto();
+        yield return new WaitForSeconds(duration);
+        HideEyeTuto();
+
+        ShowNetTuto();
+        yield return new WaitForSeconds(duration);
+        HideEyeTuto();
+
+        yield return null;
+    }
 }
