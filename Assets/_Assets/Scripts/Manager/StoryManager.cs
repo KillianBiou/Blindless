@@ -82,7 +82,6 @@ public class StoryManager : MonoBehaviour
         }
         audioSource.Stop();
         listener.enabled = false;
-        audioSource.enabled = false;
         OverlayManager.instance.RequestTrial(0, 4f);
     }
 }
