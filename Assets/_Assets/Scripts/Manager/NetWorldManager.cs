@@ -52,7 +52,7 @@ public class NetWorldManager : MonoBehaviour
     public void Load(float duration)
     {
         currentHolder.SetActive(true);
-        netStatus.SetActive(false);
+        netStatus.SetActive(true);
 
         if (!triggerDaemon && currentAccess == NetAccess.ADMINISTRATOR)
         {
@@ -71,9 +71,9 @@ public class NetWorldManager : MonoBehaviour
         {
             item.OnUnload(duration);
         }*/
-        foreach(GameObject g in transform)
+        foreach(Transform g in transform)
         {
-            g.SetActive(false);
+            g.gameObject.SetActive(false);
         }
         netStatus.SetActive(false);
         HideKeyboard();
@@ -85,9 +85,9 @@ public class NetWorldManager : MonoBehaviour
         {
             item.ForceUnload();
         }*/
-        foreach (GameObject g in transform)
+        foreach (Transform g in transform)
         {
-            g.SetActive(false);
+            g.gameObject.SetActive(false);
         }
         netStatus.SetActive(false);
         HideKeyboard();

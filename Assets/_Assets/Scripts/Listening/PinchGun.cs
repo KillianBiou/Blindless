@@ -48,11 +48,20 @@ public class PinchGun : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        hitColliders = Physics.OverlapSphere(objectToMove.position, lockDetectionDistance, destroyableObjectLayerMask);
+        if (hitColliders.Length == 0)
+        {
+            OverlayManager.instance.HideTargetTuto();
+            return;
+        }
+
+        OverlayManager.instance.ShowTargetTuto();
+
         if (CheckPinch() && (WorldManager.instance.GetCurrentWorldType() == WorldType.REAL || NetWorldManager.Instance.AreDeamonsTriggered()))
         {
             maskObject.SetActive(true);
-            hitColliders = Physics.OverlapSphere(objectToMove.position, lockDetectionDistance, destroyableObjectLayerMask);
-            if (hitColliders.Length != 0 && Physics.Raycast(leftEyeTransform.position, leftEyeTransform.forward, Mathf.Infinity, destroyableObjectLayerMask))
+            
+            if (Physics.Raycast(leftEyeTransform.position, leftEyeTransform.forward, Mathf.Infinity, destroyableObjectLayerMask))
             {
                 if (!lockTemp)
                 {
