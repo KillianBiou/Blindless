@@ -10935,7 +10935,7 @@ MonoBehaviour:
   index1: {fileID: 5046171278652317332}
   index2: {fileID: 1170738074337424160}
   fingerCollisionThreshold: 0.1
-  lockDuration: 1
+  lockDuration: 0.5
   eyeTransform: {fileID: 4455409130072089802}
   frustrumThreshold: 0.85
 --- !u!114 &3065155508976877278

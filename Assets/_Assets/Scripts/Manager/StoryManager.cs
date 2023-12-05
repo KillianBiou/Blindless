@@ -38,7 +38,7 @@ public class StoryManager : MonoBehaviour
         }
         else
         {
-            OverlayManager.instance.RequestTrial(0, 4f);
+            StopIntro();
         }
     }
 

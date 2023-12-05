@@ -573,8 +573,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentAccessText: {fileID: 364247934}
   keyboard: {fileID: 1347495126}
+  netStatus: {fileID: 1341095416}
   firstNetObjectives: {fileID: 2006022324}
   secondNetObjectives: {fileID: 681455785}
+  thirdNetObjectives: {fileID: 1226748038}
 --- !u!1 &480221160
 GameObject:
   m_ObjectHideFlags: 0
@@ -2768,7 +2770,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1838573550241674918, guid: 7c4efc0b2d9e33b46bf7b4b645744a6d, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3414364949078448553, guid: 7c4efc0b2d9e33b46bf7b4b645744a6d, type: 3}
       propertyPath: m_Sprite
@@ -2972,6 +2974,11 @@ PrefabInstance:
 --- !u!224 &1341095415 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 20164299893063111, guid: 7c4efc0b2d9e33b46bf7b4b645744a6d, type: 3}
+  m_PrefabInstance: {fileID: 1341095414}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1341095416 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1838573550241674918, guid: 7c4efc0b2d9e33b46bf7b4b645744a6d, type: 3}
   m_PrefabInstance: {fileID: 1341095414}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1347495126 stripped
@@ -4378,8 +4385,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f235b8d62cbf2d046b0bf283b3bc7624, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetTuto: {fileID: 882362751}
-  netTuto: {fileID: 966655355}
+  targetTuto: {fileID: 966655355}
+  netTuto: {fileID: 882362751}
   eyeTuto: {fileID: 1499740100}
 --- !u!114 &1864637561
 MonoBehaviour:
@@ -5240,7 +5247,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1838573550241674918, guid: 7c4efc0b2d9e33b46bf7b4b645744a6d, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3037296037895844656, guid: 7c4efc0b2d9e33b46bf7b4b645744a6d, type: 3}
       propertyPath: m_Materials.Array.data[0]
