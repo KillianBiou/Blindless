@@ -12,9 +12,13 @@ public class NetWorldManager : MonoBehaviour
     private Transform keyboard;
 
     [SerializeField]
+    private GameObject netStatus;
+    [SerializeField]
     private GameObject firstNetObjectives;
     [SerializeField]
     private GameObject secondNetObjectives;
+    [SerializeField]
+    private GameObject thirdNetObjectives;
 
     private List<WorldItem> worldItems = new List<WorldItem>();
     public static NetWorldManager Instance;
@@ -22,12 +26,14 @@ public class NetWorldManager : MonoBehaviour
     private NetAccess currentAccess;
     private bool triggerDaemon = false;
     private Vector3 basePas;
+    private GameObject currentHolder;
 
     private void Awake()
     {
         Instance = this;
         currentAccess = NetAccess.OUTSIDER;
         basePas = keyboard.position;
+        currentHolder = firstNetObjectives;
         UpdateText();
     }
 
@@ -45,11 +51,10 @@ public class NetWorldManager : MonoBehaviour
 
     public void Load(float duration)
     {
-        foreach (WorldItem item in worldItems) {
-            item.OnLoad(duration);
-        }
+        currentHolder.SetActive(true);
+        netStatus.SetActive(false);
 
-        if(!triggerDaemon && currentAccess == NetAccess.ADMINISTRATOR)
+        if (!triggerDaemon && currentAccess == NetAccess.ADMINISTRATOR)
         {
             triggerDaemon = true;
             DeamonManager.instance.StartGame();
@@ -62,19 +67,29 @@ public class NetWorldManager : MonoBehaviour
 
     public void Unload(float duration)
     {
-        foreach (WorldItem item in worldItems)
+        /*foreach (WorldItem item in worldItems)
         {
             item.OnUnload(duration);
+        }*/
+        foreach(GameObject g in transform)
+        {
+            g.SetActive(false);
         }
+        netStatus.SetActive(false);
         HideKeyboard();
     }
 
     public void ForceUnload()
     {
-        foreach(WorldItem item in worldItems)
+        /*foreach(WorldItem item in worldItems)
         {
             item.ForceUnload();
+        }*/
+        foreach (GameObject g in transform)
+        {
+            g.SetActive(false);
         }
+        netStatus.SetActive(false);
         HideKeyboard();
     }
 
@@ -86,10 +101,12 @@ public class NetWorldManager : MonoBehaviour
                 currentAccess = NetAccess.GUEST;
                 firstNetObjectives.SetActive(false);
                 secondNetObjectives.SetActive(true);
+                currentHolder = secondNetObjectives;
                 break;
             case NetAccess.GUEST:
                 currentAccess = NetAccess.ADMINISTRATOR;
                 secondNetObjectives.SetActive(false);
+                currentHolder = thirdNetObjectives;
                 break;
             case NetAccess.ADMINISTRATOR:
 
