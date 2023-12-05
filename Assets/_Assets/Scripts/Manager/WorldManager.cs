@@ -90,6 +90,9 @@ public class WorldManager : MonoBehaviour
 
         LoadRealWorld();
         netWorldReference.ForceUnload();
+
+        CycleWorld();
+        CycleWorld();
     }
 
     private void Update()
