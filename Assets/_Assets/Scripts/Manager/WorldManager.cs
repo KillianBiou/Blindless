@@ -57,6 +57,10 @@ public class WorldManager : MonoBehaviour
     [SerializeField]
     private float shrinkExpandFactor;
 
+    [Header("Sounds")]
+    [SerializeField] private List<AudioSource> realWorldAudioSources;
+    [SerializeField] private List<AudioSource> netWorldAudioSources;
+
     [Header("DEBUG ONLY")]
     [SerializeField]
     private bool debugMode;
@@ -91,6 +95,8 @@ public class WorldManager : MonoBehaviour
         LoadRealWorld();
         netWorldReference.ForceUnload();
 
+        SetRealWorldSoundsVolume(1);
+        SetNetWorldSoundsVolume(0);
         //CycleWorld();
         //CycleWorld();
     }
@@ -259,6 +265,9 @@ public class WorldManager : MonoBehaviour
 
             RenderSettings.ambientLight = Color.Lerp(realAmbiant, netAmbiant, t / transitionTimeToReal);
 
+            SetRealWorldSoundsVolume(1 - t / transitionTime);
+            SetNetWorldSoundsVolume(t / transitionTime);
+
             yield return new WaitForEndOfFrame();
             t += Time.deltaTime;
         }
@@ -290,6 +299,9 @@ public class WorldManager : MonoBehaviour
             }
 
             RenderSettings.ambientLight = Color.Lerp(netAmbiant, realAmbiant, t / transitionTimeToReal);
+
+            SetRealWorldSoundsVolume(t / transitionTimeToReal);
+            SetNetWorldSoundsVolume(1 - t / transitionTimeToReal);
 
             yield return new WaitForEndOfFrame();
             t += Time.deltaTime;
@@ -331,6 +343,22 @@ public class WorldManager : MonoBehaviour
         foreach (Renderer r in renderersList)
         {
             r.material.color = newColor;
+        }
+    }
+
+    private void SetRealWorldSoundsVolume(float volume)
+    {
+        foreach (AudioSource audio in realWorldAudioSources)
+        {
+            audio.volume = volume;
+        }
+    }
+
+    private void SetNetWorldSoundsVolume(float volume)
+    {
+        foreach (AudioSource audio in netWorldAudioSources)
+        {
+            audio.volume = volume;
         }
     }
 }
