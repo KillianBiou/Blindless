@@ -47,7 +47,7 @@ public class StoryManager : MonoBehaviour
 
     private void PlayIntro()
     {
-        cam.gameObject.SetActive(false);
+        //cam.gameObject.SetActive(false);
         foreach( var script  in scriptList ) 
         {
             script.enabled = false;
@@ -76,5 +76,6 @@ public class StoryManager : MonoBehaviour
         }
         audioSource.Stop();
         listener.enabled = false;
+        audioSource.enabled = false;
     }
 }
