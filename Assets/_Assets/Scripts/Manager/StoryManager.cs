@@ -18,6 +18,9 @@ public class StoryManager : MonoBehaviour
 
     [SerializeField] private bool debug = false;
     // Start is called before the first frame update
+    private bool hasStopped = false;
+
+    
     void Start()
     {
         cam = Camera.main;
@@ -45,7 +48,7 @@ public class StoryManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!debug && !audioSource.isPlaying)
+        if (!debug && !hasStopped && !audioSource.isPlaying)
         {
             StopIntro();
         }
@@ -70,6 +73,7 @@ public class StoryManager : MonoBehaviour
 
     private void StopIntro()
     {
+        hasStopped = true;
         //cam.gameObject.SetActive(true);
         foreach (var script in scriptList)
         {
@@ -82,6 +86,6 @@ public class StoryManager : MonoBehaviour
         }
         audioSource.Stop();
         listener.enabled = false;
-        OverlayManager.instance.RequestTrial(0, 4f);
+        //OverlayManager.instance.RequestTrial(0, 4f);
     }
 }

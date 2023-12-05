@@ -24,6 +24,8 @@ public class PinchGun : MonoBehaviour
     [SerializeField] private float lockDuration = 5f;
     private bool lockTemp = false;
     private float lockTempAlert = 0;
+    private bool firstPinch = true;
+    private bool isShowed = false;
 
     public static PinchGun instance;
 
@@ -48,17 +50,28 @@ public class PinchGun : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(NetWorldManager.Instance.GetCurrentAccess() == NetWorldManager.NetAccess.GUEST && !isShowed)
+        {
+            OverlayManager.instance.ShowTargetTuto();
+            isShowed = true;
+        }
+
         hitColliders = Physics.OverlapSphere(objectToMove.position, lockDetectionDistance, destroyableObjectLayerMask);
         if (hitColliders.Length == 0)
         {
-            OverlayManager.instance.HideTargetTuto();
+            //OverlayManager.instance.HideTargetTuto();
             return;
         }
 
-        OverlayManager.instance.ShowTargetTuto();
+        //OverlayManager.instance.ShowTargetTuto();
 
         if (CheckPinch() && (WorldManager.instance.GetCurrentWorldType() == WorldType.REAL || NetWorldManager.Instance.AreDeamonsTriggered()))
         {
+            if (firstPinch)
+            {
+                firstPinch = false;
+                OverlayManager.instance.HideTargetTuto();
+            }
             maskObject.SetActive(true);
             
             if (Physics.Raycast(leftEyeTransform.position, leftEyeTransform.forward, Mathf.Infinity, destroyableObjectLayerMask))
@@ -97,6 +110,7 @@ public class PinchGun : MonoBehaviour
 
     private bool CheckPinch()
     {
+        Debug.Log("feezfezf");
         if (Vector3.Distance(thumb.position, index.position) < pinchThreshold)
         {
             return true;

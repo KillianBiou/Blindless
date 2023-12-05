@@ -45,6 +45,17 @@ public class OverlayManager : MonoBehaviour
         targetTuto.SetActive(true);
     }
 
+    public void ShowTargetTutoFor(float duration)
+    {
+        StartCoroutine(TargetCoroutine(duration));
+    }
+
+    private IEnumerator TargetCoroutine(float duration) {
+        ShowTargetTuto();
+        yield return new WaitForSeconds(duration);
+        HideTargetTuto();
+    }
+
     public void HideTargetTuto()
     {
         targetTuto.SetActive(false);
@@ -72,7 +83,7 @@ public class OverlayManager : MonoBehaviour
 
     public void RequestTrial(int number, float duration)
     {
-        switch (number)
+        /*switch (number)
         {
             case 0:
                 StartCoroutine(FirstTrial(duration));
@@ -83,7 +94,7 @@ public class OverlayManager : MonoBehaviour
             case 2:
                 StartCoroutine(ThirdTrial(duration));
                 break;
-        }
+        }*/
     }
 
     private IEnumerator FirstTrial(float duration)

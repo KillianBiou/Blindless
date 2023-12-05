@@ -178,4 +178,9 @@ public class NetWorldManager : MonoBehaviour
     {
         return triggerDaemon;
     }
+
+    public NetAccess GetCurrentAccess()
+    {
+        return currentAccess;
+    }
 }

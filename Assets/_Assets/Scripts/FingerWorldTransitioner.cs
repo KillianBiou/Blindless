@@ -21,10 +21,12 @@ public class FingerWorldTransitioner : MonoBehaviour
     [SerializeField] private Transform eyeTransform;
     [SerializeField] private float frustrumThreshold = 0.7f;
 
-    // Start is called before the first frame update
-    void Start()
+    public static FingerWorldTransitioner instance;
+    private bool firstNet = true;
+
+    private void Awake()
     {
-        
+        instance = this;
     }
 
     // Update is called once per frame
@@ -49,6 +51,11 @@ public class FingerWorldTransitioner : MonoBehaviour
             {
                 WorldManager.instance.CycleWorld();
                 canChangeWorld = false;
+                if (!firstNet)
+                {
+                    firstNet = true;
+                    OverlayManager.instance.HideNetTuto();
+                }
             }
             lockTemp = false;
         }
@@ -81,6 +88,11 @@ public class FingerWorldTransitioner : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public void SetFirstNet(bool value)
+    {
+        firstNet = value;
     }
 
     private void OnDrawGizmos()

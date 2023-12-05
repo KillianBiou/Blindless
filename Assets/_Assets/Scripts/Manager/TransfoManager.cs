@@ -69,8 +69,4 @@ public class TransfoManager : MonoBehaviour
         Debug.Log("transfo win");
         transfoBaseText.text = "Suffisant privileges, launch escalation for root.";
     }
-
-    public void LaunchEscalation()
-    {
-    }
 }
