@@ -45,6 +45,7 @@ public class TransfoManager : MonoBehaviour
 
     public void StartTransfo()
     {
+        OverlayManager.instance.RequestTrial(1, 5f);
         transfoText.gameObject.SetActive(true);
         foreach (GameObject t in transfoList)
         {

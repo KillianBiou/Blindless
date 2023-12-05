@@ -33,13 +33,19 @@ public class StoryManager : MonoBehaviour
         audioSource.loop = false;
         
         if (!debug)
+        {
             PlayIntro();
+        }
+        else
+        {
+            OverlayManager.instance.RequestTrial(0, 4f);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!audioSource.isPlaying)
+        if (!debug && !audioSource.isPlaying)
         {
             StopIntro();
         }
@@ -64,7 +70,7 @@ public class StoryManager : MonoBehaviour
 
     private void StopIntro()
     {
-        cam.gameObject.SetActive(true);
+        //cam.gameObject.SetActive(true);
         foreach (var script in scriptList)
         {
             script.enabled = true;
@@ -77,5 +83,6 @@ public class StoryManager : MonoBehaviour
         audioSource.Stop();
         listener.enabled = false;
         audioSource.enabled = false;
+        OverlayManager.instance.RequestTrial(0, 4f);
     }
 }

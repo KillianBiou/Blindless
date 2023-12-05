@@ -65,6 +65,7 @@ public class DeamonManager : MonoBehaviour, PlayerSubscriber
 
     public void StartGame()
     {
+        OverlayManager.instance.RequestTrial(2, 6f);
         WorldManager.instance.TriggerNet();
         PinchGun.instance.SetLockDuration(1f);
         PinchGun.instance.SetLockDistance(4f);

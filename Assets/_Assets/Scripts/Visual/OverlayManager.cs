@@ -12,6 +12,13 @@ public class OverlayManager : MonoBehaviour
     [SerializeField]
     private GameObject eyeTuto;
 
+    public static OverlayManager instance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
     private void Start()
     {
         targetTuto.SetActive(false);
@@ -49,16 +56,55 @@ public class OverlayManager : MonoBehaviour
         eyeTuto.SetActive(false);
     }
 
-    public IEnumerator FirstTrial(float duration)
+    public void RequestTrial(int number, float duration)
     {
+        switch (number)
+        {
+            case 0:
+                StartCoroutine(FirstTrial(duration));
+                break;
+            case 1:
+                StartCoroutine(SecondTrial(duration));
+                break;
+            case 2:
+                StartCoroutine(ThirdTrial(duration));
+                break;
+        }
+        StartCoroutine(FirstTrial(duration));
+    }
+
+    private IEnumerator FirstTrial(float duration)
+    {
+        yield return new WaitForSeconds(.1f);
+
         ShowEyeTuto();
         yield return new WaitForSeconds(duration);
         HideEyeTuto();
 
         ShowNetTuto();
         yield return new WaitForSeconds(duration);
-        HideEyeTuto();
+        HideNetTuto();
+    }
 
-        yield return null;
+    private IEnumerator SecondTrial(float duration)
+    {
+        yield return new WaitForSeconds(.1f);
+
+        ShowNetTuto();
+        yield return new WaitForSeconds(duration);
+        HideNetTuto();
+
+        ShowTargetTuto();
+        yield return new WaitForSeconds(duration);
+        HideTargetTuto();
+    }
+
+    private IEnumerator ThirdTrial(float duration)
+    {
+        yield return new WaitForSeconds(.1f);
+
+        ShowTargetTuto();
+        yield return new WaitForSeconds(duration);
+        HideTargetTuto();
     }
 }
