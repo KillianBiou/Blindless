@@ -26,6 +26,20 @@ public class OverlayManager : MonoBehaviour
         eyeTuto.SetActive(false);
     }
 
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.K)) {
+            RequestTrial(0, 5f);
+        }
+        if(Input.GetKeyDown(KeyCode.L))
+        {
+            RequestTrial(1, 5f);
+        }
+        if(Input.GetKeyDown(KeyCode.M)) {
+            RequestTrial(2, 5f);
+        }
+    }
+
     public void ShowTargetTuto()
     {
         targetTuto.SetActive(true);
@@ -70,7 +84,6 @@ public class OverlayManager : MonoBehaviour
                 StartCoroutine(ThirdTrial(duration));
                 break;
         }
-        StartCoroutine(FirstTrial(duration));
     }
 
     private IEnumerator FirstTrial(float duration)
