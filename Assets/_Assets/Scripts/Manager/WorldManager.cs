@@ -102,8 +102,6 @@ public class WorldManager : MonoBehaviour
         SetRealWorldSoundsVolume(1);
         SetNetWorldSoundsVolume(0);
 
-        StartCoroutine(StartTutorial(timeBeforeTuto));
-
         //CycleWorld();
         //CycleWorld();
     }
@@ -367,12 +365,5 @@ public class WorldManager : MonoBehaviour
         {
             audio.volume = volume;
         }
-    }
-
-    private IEnumerator StartTutorial(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        OverlayManager.instance.ShowEyeTuto();
-        VisionPointer.instance.SetFirstEyeClosed(false);
     }
 }

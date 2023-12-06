@@ -110,9 +110,9 @@ public class PinchGun : MonoBehaviour
 
     private bool CheckPinch()
     {
-        Debug.Log("feezfezf");
         if (Vector3.Distance(thumb.position, index.position) < pinchThreshold)
         {
+            TutorialManager.instance.PinchFinger();
             return true;
         }
         return false;

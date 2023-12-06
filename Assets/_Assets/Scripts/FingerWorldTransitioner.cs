@@ -22,7 +22,6 @@ public class FingerWorldTransitioner : MonoBehaviour
     [SerializeField] private float frustrumThreshold = 0.7f;
 
     public static FingerWorldTransitioner instance;
-    private bool firstNet = true;
 
     private void Awake()
     {
@@ -32,6 +31,11 @@ public class FingerWorldTransitioner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.G))
+        {
+            WorldManager.instance.CycleWorld();
+            TutorialManager.instance.NetGesture();
+        }
         if (!CheckIfFingersInFrustrum())
         {
             return;
@@ -51,11 +55,7 @@ public class FingerWorldTransitioner : MonoBehaviour
             {
                 WorldManager.instance.CycleWorld();
                 canChangeWorld = false;
-                if (!firstNet)
-                {
-                    firstNet = true;
-                    OverlayManager.instance.HideNetTuto();
-                }
+                TutorialManager.instance.NetGesture();
             }
             lockTemp = false;
         }
@@ -88,11 +88,6 @@ public class FingerWorldTransitioner : MonoBehaviour
             return true;
         }
         return false;
-    }
-
-    public void SetFirstNet(bool value)
-    {
-        firstNet = value;
     }
 
     private void OnDrawGizmos()

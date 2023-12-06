@@ -39,8 +39,6 @@ public class VisionPointer : MonoBehaviour
     [Header ("Objects at muffle range")]
     [SerializeField] private float muffleDistance = 1f;
     [SerializeField] private LayerMask muffleLayerMask;
-
-    private bool firstClosedEye = true;
     /*
         [Header("Vision gun")]
         [SerializeField] private bool lockTemp;
@@ -91,6 +89,12 @@ public class VisionPointer : MonoBehaviour
 
     private void CheckEyeState()
     {
+        if(Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            TriggerClosedEye();
+            TriggerOpenEye();
+        }
+
         if (!faceExpression || !faceExpression.isActiveAndEnabled)
         {
             return;
@@ -128,13 +132,7 @@ public class VisionPointer : MonoBehaviour
 
     private void TriggerClosedEye()
     {
-        if (!firstClosedEye)
-        {
-            OverlayManager.instance.HideEyeTuto();
-            firstClosedEye = true;
-            OverlayManager.instance.ShowNetTuto();
-            FingerWorldTransitioner.instance.SetFirstNet(false);
-        }
+        TutorialManager.instance.CloseEye();
         unmuffulableObjects = Physics.OverlapSphere(objectToMove.position, muffleDistance, muffleLayerMask);
         Debug.Log(unmuffulableObjects.Length);
         foreach (var muffledObject in unmuffulableObjects)
@@ -165,10 +163,5 @@ public class VisionPointer : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(objectToMove.position, muffleDistance);
-    }
-
-    public void SetFirstEyeClosed(bool value)
-    {
-        firstClosedEye = value;
     }
 }

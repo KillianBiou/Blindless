@@ -1,0 +1,139 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class TutorialManager : MonoBehaviour
+{
+    [Header("Tutorial Parameters")]
+    [SerializeField]
+    private float initialDelay;
+
+    public static TutorialManager instance;
+
+    private bool hasStarted = false;
+    private bool isDisplayed = false;
+
+    private bool closedEyes = false;
+    private bool usedNetGesture = false;
+    private bool pinchedFinger = false;
+    private bool deamonKilled = false;
+
+    private int currentState = 0;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
+    private void Start()
+    {
+        StartCoroutine(InitialDelay());
+    }
+
+    private void Update()
+    {
+        if (hasStarted)
+        {
+            if(isDisplayed == false)
+            {
+                switch (currentState)
+                {
+                    case 0:
+                        OverlayManager.instance.ShowNetTuto();
+                        isDisplayed = true;
+                        break;
+                    case 1:
+                        OverlayManager.instance.ShowEyeTuto();
+                        isDisplayed = true;
+                        break;
+                    case 2:
+                        if (WorldManager.instance.GetCurrentWorldType() == WorldType.REAL)
+                        {
+                            OverlayManager.instance.ShowTargetTuto();
+                            isDisplayed = true;
+                        }
+                        break;
+                    case 3:
+                        if (NetWorldManager.Instance.AreDeamonsTriggered())
+                        {
+                            OverlayManager.instance.ShowTargetTuto();
+                            isDisplayed = true;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else
+            {
+                switch (currentState)
+                {
+                    case 0:
+                        if (usedNetGesture)
+                        {
+                            OverlayManager.instance.HideNetTuto();
+                            currentState++;
+                            isDisplayed = false;
+                        }
+                        break;
+                    case 1:
+                        if (closedEyes)
+                        {
+                            OverlayManager.instance.HideEyeTuto();
+                            currentState++;
+                            isDisplayed = false;
+                        }
+                        break;
+                    case 2:
+                        if (pinchedFinger)
+                        {
+                            OverlayManager.instance.HideTargetTuto();
+                            currentState++;
+                            isDisplayed = false;
+                        }
+                        break;
+                    case 3:
+                        if (deamonKilled)
+                        {
+                            OverlayManager.instance.HideTargetTuto();
+                            currentState++;
+                            isDisplayed = false;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        closedEyes = false;
+        usedNetGesture = false; 
+        pinchedFinger = false;
+        deamonKilled = false;
+    }
+
+    private IEnumerator InitialDelay()
+    {
+        yield return new WaitForSeconds(initialDelay);
+        hasStarted = true;
+    }
+
+    public void CloseEye()
+    {
+        closedEyes = true;
+    }
+
+    public void NetGesture()
+    {
+        usedNetGesture = true;
+    }
+
+    public void PinchFinger()
+    {
+        pinchedFinger = true;
+    }
+
+    public void DeamonKilled()
+    {
+        deamonKilled = true;
+    }
+}
