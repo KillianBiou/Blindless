@@ -35,12 +35,12 @@ public class TransfoManager : MonoBehaviour
         {
             if (go.activeSelf)
             {
-                transfoText.text = $"{transfoList.Count - count} / firewall remaining.";
+                transfoText.text = $"{transfoList.Count - count} / {transfoList.Count} remaining.";
                 return;
             }
             count++;
         }
-        transfoText.text = $"{transfoList.Count - count} / firewall remaining.";
+        transfoText.text = $"{transfoList.Count - count} / {transfoList.Count} firewall remaining.";
         Win();
     }
 
@@ -66,14 +66,18 @@ public class TransfoManager : MonoBehaviour
 
     private void Win()
     {
-        NetWorldManager.Instance.EscalatePrivilege();
         hasWin = true;
         Debug.Log("transfo win");
-        transfoBaseText.text = "Suffisant privileges, launch escalation for root.";
+        transfoBaseText.text = "Suffisant privileges, you can launch escalation for root.";
     }
 
     public bool HasStarted()
     {
         return hasStarted;
+    }
+
+    public bool HasWon()
+    {
+        return hasWin;
     }
 }

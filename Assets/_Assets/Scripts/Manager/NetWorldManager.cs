@@ -56,8 +56,8 @@ public class NetWorldManager : MonoBehaviour
 
         if (!triggerDaemon && currentAccess == NetAccess.ADMINISTRATOR)
         {
-            triggerDaemon = true;
-            DeamonManager.instance.StartGame();
+/*            triggerDaemon = true;
+            DeamonManager.instance.StartGame();*/
         }
         else
         {
@@ -107,6 +107,7 @@ public class NetWorldManager : MonoBehaviour
                 currentAccess = NetAccess.ADMINISTRATOR;
                 secondNetObjectives.SetActive(false);
                 currentHolder = thirdNetObjectives;
+                DeamonManager.instance.StartGame();
                 break;
             case NetAccess.ADMINISTRATOR:
 

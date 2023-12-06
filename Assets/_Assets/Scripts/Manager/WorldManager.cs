@@ -251,6 +251,7 @@ public class WorldManager : MonoBehaviour
         Animator sceneAnimator = sceneParent.GetComponent<Animator>();
         sceneAnimator.SetFloat("Speed", shrinkExpandFactor);
         sceneAnimator.SetTrigger(triggerCommutator ? "Expand" : "Shrink");
+        NetWorldManager.Instance.SetDeamonTrigger(triggerCommutator);
     }
 
     private IEnumerator ToNetLerp()
