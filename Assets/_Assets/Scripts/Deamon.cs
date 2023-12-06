@@ -36,12 +36,14 @@ public class Deamon : MonoBehaviour
             lastPos = transform.position;
             if(Vector3.Distance(transform.position, target.position) < 20f)
             {
+                DeamonManager.instance.RemoveDeamon();
                 target.GetComponent<Player>().TakeDamage(1);
                 Destroy(gameObject);
             }
 
             if (!CheckWeakpoints())
             {
+                DeamonManager.instance.RemoveDeamon();
                 Destroy(gameObject);
             }
         }

@@ -29,6 +29,8 @@ public class DeamonManager : MonoBehaviour, PlayerSubscriber
     [SerializeField]
     private GameObject player;
 
+    private int deamonCount = 0;
+
     [Header("Instanciation Parameters")]
     [SerializeField]
     private Vector2 distanceMinMax;
@@ -65,10 +67,10 @@ public class DeamonManager : MonoBehaviour, PlayerSubscriber
 
     public void StartGame()
     {
-        OverlayManager.instance.RequestTrial(2, 6f);
         WorldManager.instance.TriggerNet();
         PinchGun.instance.SetLockDuration(1f);
         PinchGun.instance.SetLockDistance(4f);
+        player.transform.position += 20 * Vector3.up;
         NetWorldManager.Instance.CommuteNetStatus();
         StartCoroutine(RunWave());
     }
@@ -91,13 +93,17 @@ public class DeamonManager : MonoBehaviour, PlayerSubscriber
     private void TriggerWin()
     {
         Debug.Log("Daemon Defeated");
+        NetWorldManager.Instance.SetDeamonTrigger(false);
+        player.transform.position -= 20 * Vector3.up;
         NetWorldManager.Instance.CommuteNetStatus();
         WorldManager.instance.TriggerNet();
     }
 
     private void TriggerLose()
     {
-        foreach(Deamon d in GameObject.FindObjectsOfType<Deamon>()){
+        NetWorldManager.Instance.SetDeamonTrigger(false);
+        player.transform.position -= 20 * Vector3.up;
+        foreach (Deamon d in GameObject.FindObjectsOfType<Deamon>()){
             Destroy(d.gameObject);
         }
         Debug.Log("Player got fucked");
@@ -110,6 +116,7 @@ public class DeamonManager : MonoBehaviour, PlayerSubscriber
         while(currentEnemyCount < currentWave.enemyNumber && !playerDead)
         {
             currentEnemyCount++;
+            AddDeamon();
             Deamon deamon = Instantiate(daemonPrefab, GetRandomPointInArc() + Vector3.down * downOffset, Quaternion.identity).GetComponent<Deamon>();
             deamon.Instantiate(deamonMaxHealth, deamonSpeed, player.transform, downOffset);
             float waitT = 0f;
@@ -134,6 +141,10 @@ public class DeamonManager : MonoBehaviour, PlayerSubscriber
         }
         else if (!playerDead)
         {
+            while(deamonCount != 0)
+            {
+                yield return new WaitForSeconds(.1f);
+            }
             TriggerWin();
         }
     }
@@ -141,5 +152,15 @@ public class DeamonManager : MonoBehaviour, PlayerSubscriber
     public void NotifyDeath()
     {
         playerDead = true;
+    }
+
+    public void AddDeamon()
+    {
+        deamonCount++;
+    }
+
+    public void RemoveDeamon()
+    {
+        deamonCount--;
     }
 }

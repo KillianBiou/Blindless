@@ -14,6 +14,8 @@ public class StoryManager : MonoBehaviour
 
     private Camera cam;
 
+    [SerializeField] private Light mainLight;
+
     [SerializeField] private List<AudioSource> audioSources;
 
     [SerializeField] private bool debug = false;
@@ -69,6 +71,7 @@ public class StoryManager : MonoBehaviour
         }
         audioSource.clip = dialogueAudioClips[0];
         audioSource.Play();
+        mainLight.gameObject.SetActive(false);
     }
 
     private void StopIntro()
@@ -86,6 +89,7 @@ public class StoryManager : MonoBehaviour
         }
         audioSource.Stop();
         listener.enabled = false;
+        mainLight.gameObject.SetActive(true);
         //OverlayManager.instance.RequestTrial(0, 4f);
     }
 }

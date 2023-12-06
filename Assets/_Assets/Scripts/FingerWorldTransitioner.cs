@@ -51,7 +51,7 @@ public class FingerWorldTransitioner : MonoBehaviour
         }
         else
         {
-            if (canChangeWorld)
+            if (canChangeWorld && !NetWorldManager.Instance.AreDeamonsTriggered())
             {
                 WorldManager.instance.CycleWorld();
                 canChangeWorld = false;

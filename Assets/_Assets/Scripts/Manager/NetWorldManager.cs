@@ -183,4 +183,9 @@ public class NetWorldManager : MonoBehaviour
     {
         return currentAccess;
     }
+
+    public void SetDeamonTrigger(bool value)
+    {
+        triggerDaemon = value;
+    }
 }
