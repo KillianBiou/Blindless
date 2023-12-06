@@ -15,8 +15,11 @@ public class Player : MonoBehaviour
 
     private List<PlayerSubscriber> subscriberList = new List<PlayerSubscriber>();
 
+    public static Player Instance;
+
     private void Start()
     {
+        Instance = this;
         hp = maxHp;
     }
 
