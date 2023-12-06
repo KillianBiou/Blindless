@@ -7,6 +7,8 @@ public class TutorialManager : MonoBehaviour
     [Header("Tutorial Parameters")]
     [SerializeField]
     private float initialDelay;
+    [SerializeField]
+    private float minDelayTarget;
 
     public static TutorialManager instance;
 
@@ -17,6 +19,8 @@ public class TutorialManager : MonoBehaviour
     private bool usedNetGesture = false;
     private bool pinchedFinger = false;
     private bool deamonKilled = false;
+
+    private float timestamp = 0f;
 
     private int currentState = 0;
 
@@ -51,6 +55,7 @@ public class TutorialManager : MonoBehaviour
                         {
                             OverlayManager.instance.ShowTargetTuto();
                             isDisplayed = true;
+                            timestamp = Time.time;
                         }
                         break;
                     case 3:
@@ -87,9 +92,12 @@ public class TutorialManager : MonoBehaviour
                     case 2:
                         if (pinchedFinger)
                         {
-                            OverlayManager.instance.HideTargetTuto();
-                            currentState++;
-                            isDisplayed = false;
+                            if(timestamp < Time.time + minDelayTarget)
+                            {
+                                OverlayManager.instance.HideTargetTuto();
+                                currentState++;
+                                isDisplayed = false;
+                            }
                         }
                         break;
                     case 3:
