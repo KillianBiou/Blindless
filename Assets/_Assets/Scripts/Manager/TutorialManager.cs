@@ -11,6 +11,7 @@ public class TutorialManager : MonoBehaviour
     public static TutorialManager instance;
 
     private bool hasStarted = false;
+    private bool start = false;
     private bool isDisplayed = false;
 
     private bool closedEyes = false;
@@ -27,11 +28,16 @@ public class TutorialManager : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(InitialDelay());
+        //StartCoroutine(InitialDelay());
     }
 
     private void Update()
     {
+        if (start)
+        {
+            StartCoroutine(InitialDelay());
+            start = false;
+        }
         if (hasStarted)
         {
             if(isDisplayed == false)
@@ -43,11 +49,14 @@ public class TutorialManager : MonoBehaviour
                         isDisplayed = true;
                         break;
                     case 1:
-                        OverlayManager.instance.ShowEyeTuto();
-                        isDisplayed = true;
+                        if (WorldManager.instance.GetCurrentWorldType() == WorldType.REAL)
+                        {
+                            OverlayManager.instance.ShowEyeTuto();
+                            isDisplayed = true;
+                        }
                         break;
                     case 2:
-                        if (WorldManager.instance.GetCurrentWorldType() == WorldType.REAL)
+                        if (WorldManager.instance.GetCurrentWorldType() == WorldType.REAL && TransfoManager.instance.HasStarted())
                         {
                             OverlayManager.instance.ShowTargetTuto();
                             isDisplayed = true;
@@ -109,6 +118,11 @@ public class TutorialManager : MonoBehaviour
         usedNetGesture = false; 
         pinchedFinger = false;
         deamonKilled = false;
+    }
+
+    public void StartTuto()
+    {
+        start = true;
     }
 
     private IEnumerator InitialDelay()

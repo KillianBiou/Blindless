@@ -90,6 +90,6 @@ public class StoryManager : MonoBehaviour
         audioSource.Stop();
         listener.enabled = false;
         mainLight.gameObject.SetActive(true);
-        //OverlayManager.instance.RequestTrial(0, 4f);
+        GetComponent<TutorialManager>().StartTuto();
     }
 }

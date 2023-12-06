@@ -14,6 +14,7 @@ public class TransfoManager : MonoBehaviour
     [SerializeField] private TMP_Text transfoBaseText;
 
     private bool hasWin = false;
+    private bool hasStarted = false;
 
 
     private void Awake()
@@ -51,6 +52,7 @@ public class TransfoManager : MonoBehaviour
         {
             t.SetActive(true);
         }
+        hasStarted = true;
         CheckState();
     }
     public void StopTransfo()
@@ -68,5 +70,10 @@ public class TransfoManager : MonoBehaviour
         hasWin = true;
         Debug.Log("transfo win");
         transfoBaseText.text = "Suffisant privileges, launch escalation for root.";
+    }
+
+    public bool HasStarted()
+    {
+        return hasStarted;
     }
 }

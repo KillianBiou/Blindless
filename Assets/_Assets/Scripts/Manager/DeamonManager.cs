@@ -28,6 +28,8 @@ public class DeamonManager : MonoBehaviour, PlayerSubscriber
     private GameObject daemonPrefab;
     [SerializeField]
     private GameObject player;
+    [SerializeField]
+    private AudioSource alarmAudioSource;
 
     private int deamonCount = 0;
 
@@ -67,6 +69,7 @@ public class DeamonManager : MonoBehaviour, PlayerSubscriber
 
     public void StartGame()
     {
+        alarmAudioSource.Play();
         WorldManager.instance.TriggerNet();
         PinchGun.instance.SetLockDuration(1f);
         PinchGun.instance.SetLockDistance(4f);
@@ -92,6 +95,7 @@ public class DeamonManager : MonoBehaviour, PlayerSubscriber
 
     private void TriggerWin()
     {
+        alarmAudioSource.Stop();
         Debug.Log("Daemon Defeated");
         NetWorldManager.Instance.SetDeamonTrigger(false);
         player.transform.position -= 20 * Vector3.up;
@@ -101,6 +105,7 @@ public class DeamonManager : MonoBehaviour, PlayerSubscriber
 
     private void TriggerLose()
     {
+        alarmAudioSource.Stop();
         NetWorldManager.Instance.SetDeamonTrigger(false);
         player.transform.position -= 20 * Vector3.up;
         foreach (Deamon d in GameObject.FindObjectsOfType<Deamon>()){
@@ -162,5 +167,6 @@ public class DeamonManager : MonoBehaviour, PlayerSubscriber
     public void RemoveDeamon()
     {
         deamonCount--;
+        TutorialManager.instance.DeamonKilled();
     }
 }
