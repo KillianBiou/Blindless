@@ -15,6 +15,11 @@ public class Deamon : MonoBehaviour
     [SerializeField]
     private List<GameObject> weakPointList;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource staticAudioSource;
+    [SerializeField] private AudioClip destroySound;
+    [SerializeField][Range(0f, 1f)] private float destroySoundVolume;
+
     private Animator animator;
 
     private float velocity;
@@ -34,18 +39,36 @@ public class Deamon : MonoBehaviour
             transform.LookAt(target.position + Vector3.down * downOffset);
             transform.position = Vector3.Lerp(transform.position, target.position + Vector3.down * downOffset, speed * Time.deltaTime);
             lastPos = transform.position;
-            if(Vector3.Distance(transform.position, target.position) < 20f)
+            if(Vector3.Distance(transform.position, target.position) < 10f)
             {
                 DeamonManager.instance.RemoveDeamon();
                 target.GetComponent<Player>().TakeDamage(1);
-                Destroy(gameObject);
+                DestroyElement();
             }
 
             if (!CheckWeakpoints())
             {
                 DeamonManager.instance.RemoveDeamon();
-                Destroy(gameObject);
+                DestroyElement();
             }
+        }
+    }
+
+    public void DestroyElement()
+    {
+        if (staticAudioSource)
+            Destroy(staticAudioSource);
+        if (destroySound)
+        {
+            GameObject go = Instantiate(new GameObject(), transform.position, transform.rotation);
+            AudioSource au = go.AddComponent<AudioSource>();
+
+            au.clip = destroySound;
+            au.volume = destroySoundVolume;
+            au.Play();
+
+            Destroy(go, destroySound.length);
+            Destroy(gameObject);
         }
     }
 

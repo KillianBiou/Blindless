@@ -816,6 +816,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tranformer
       objectReference: {fileID: 0}
+    - target: {fileID: 2608559637434201867, guid: c017f45e8aa8a084ba2e427262952eff, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3420668119513804209, guid: c017f45e8aa8a084ba2e427262952eff, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.4578236
@@ -1287,6 +1291,14 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5174912668068730233, guid: f731aa7dec67a7f4e989ae285b23e9a1, type: 3}
   m_PrefabInstance: {fileID: 1435604886}
   m_PrefabAsset: {fileID: 0}
+--- !u!81 &1118392955
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1118392944}
+  m_Enabled: 0
 --- !u!224 &1127841208 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 20164299893063111, guid: 7c4efc0b2d9e33b46bf7b4b645744a6d, type: 3}
@@ -1483,6 +1495,7 @@ MonoBehaviour:
   deamonSpeed: 0.1
   daemonPrefab: {fileID: 2267033473182024610, guid: 831eef1b16bbd0948a6c22348a5f6ecd, type: 3}
   player: {fileID: 1118392944}
+  alarmAudioSource: {fileID: 0}
   distanceMinMax: {x: 60, y: 70}
   maxAngle: 180
   downOffset: 15
@@ -1500,6 +1513,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueAudioClips: []
   scriptList: []
+  mainLight: {fileID: 0}
   audioSources: []
   debug: 1
 --- !u!114 &1149038624
@@ -2464,7 +2478,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4209755341832935625, guid: f731aa7dec67a7f4e989ae285b23e9a1, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -66.000015
+      value: -66
       objectReference: {fileID: 0}
     - target: {fileID: 4209755341832935625, guid: f731aa7dec67a7f4e989ae285b23e9a1, type: 3}
       propertyPath: m_ConstrainProportionsScale
@@ -2590,6 +2604,9 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1836271425}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5174912668068730233, guid: f731aa7dec67a7f4e989ae285b23e9a1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1118392955}
     - targetCorrespondingSourceObject: {fileID: 2449591962523498682, guid: f731aa7dec67a7f4e989ae285b23e9a1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1955514939}

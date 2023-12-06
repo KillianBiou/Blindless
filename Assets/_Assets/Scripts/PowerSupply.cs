@@ -4,36 +4,31 @@ using UnityEngine;
 
 public class PowerSupply : MonoBehaviour
 {
-    [SerializeField] private int maxHealth = 20;
-    private int health = 0;
-    // Start is called before the first frame update
-    void Start()
+
+    [SerializeField] private AudioSource staticAudioSource;
+    [SerializeField] private AudioClip destroySound;
+    [SerializeField] [Range(0f, 1f)] private float destroySoundVolume;
+
+    private void OnDisable()
     {
-        health = maxHealth;
+        DestroyElement();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void DestroyElement()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if(staticAudioSource)
+            Destroy(staticAudioSource);
+        if (destroySound)
         {
-            TakeDamage();
-        }
-    }
+            GameObject go = Instantiate(new GameObject(), transform.position, transform.rotation);
+            AudioSource au = go.AddComponent<AudioSource>();
 
-    public void TakeDamage()
-    {
-        if (health == 0)
-        {
-            return;
-        }
+            au.clip = destroySound;
+            au.volume = destroySoundVolume;
+            au.Play();
 
-        if (health - 1 <= 0)
-        {
-            health = 0;
-            Debug.Log("Power supply dead !");
-            return;
+            Destroy(go, destroySound.length);
+            Destroy(this);
         }
-        health--;
     }
 }
