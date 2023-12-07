@@ -10879,7 +10879,7 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 192
-  muffleDistance: 1.5
+  muffleDistance: 42
   muffleLayerMask:
     serializedVersion: 2
     m_Bits: 128

@@ -54,6 +54,7 @@ public class PasswordManager : MonoBehaviour
         DeactivateKeyboard();
         hatchAnimator.SetTrigger("Open");
         doorSource.loop = false;
+        doorSource.mute = true;
         doorSource.Stop();
         NetWorldManager.Instance.EscalatePrivilege();
         //NetWorldManager.Instance.DeleteKeyboard();

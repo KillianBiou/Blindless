@@ -111,7 +111,7 @@ public class StoryManager : MonoBehaviour
         UIHolder.SetActive(false);
         UICreditHolder.SetActive(true);
         MonologueManager.Instance.PlayShooting();
-        StartCoroutine(CloseApplication(25f));
+        StartCoroutine(CloseApplication(40));
     }
 
     private IEnumerator CloseApplication(float delay)

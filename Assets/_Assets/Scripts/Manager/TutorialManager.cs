@@ -20,6 +20,7 @@ public class TutorialManager : MonoBehaviour
     private bool usedNetGesture = false;
     private bool pinchedFinger = false;
     private bool deamonKilled = false;
+    private bool transfomerDestroyed = false;
 
     private float timestamp = 0f;
 
@@ -101,14 +102,11 @@ public class TutorialManager : MonoBehaviour
                         }
                         break;
                     case 2:
-                        if (pinchedFinger)
+                        if (transfomerDestroyed)
                         {
-                            if(timestamp < Time.time + minDelayTarget)
-                            {
-                                OverlayManager.instance.HideTargetTuto();
-                                currentState++;
-                                isDisplayed = false;
-                            }
+                            OverlayManager.instance.HideTargetTuto();
+                            currentState++;
+                            isDisplayed = false;
                         }
                         break;
                     case 3:
@@ -128,6 +126,7 @@ public class TutorialManager : MonoBehaviour
         usedNetGesture = false; 
         pinchedFinger = false;
         deamonKilled = false;
+        transfomerDestroyed = false;
     }
 
     public void StartTuto()
@@ -154,6 +153,11 @@ public class TutorialManager : MonoBehaviour
     public void PinchFinger()
     {
         pinchedFinger = true;
+    }
+
+    public void TransformerDestroyed()
+    {
+        transfomerDestroyed = true;
     }
 
     public void DeamonKilled()

@@ -88,6 +88,7 @@ public class PinchGun : MonoBehaviour
         {
             foreach (Collider collider in hitColliders)
             {
+                TutorialManager.instance.TransformerDestroyed();
                 collider.gameObject.SetActive(false);
             }
             //mainCamera.fieldOfView = initialFOV;

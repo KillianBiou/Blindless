@@ -74,7 +74,7 @@ public class FingerWorldTransitioner : MonoBehaviour
         float thumbDistance = Vector3.Distance(thumb1.position, thumb2.position);
         float indexDistance = Vector3.Distance(index1.position, index2.position);
 
-        if (!canChangeWorld)
+        if (!canChange)
             return false;
 
         if (thumbDistance < fingerCollisionThreshold && indexDistance < fingerCollisionThreshold)
@@ -103,6 +103,6 @@ public class FingerWorldTransitioner : MonoBehaviour
     }
 
     public void SetCanChange(bool canChange) { 
-        this.canChangeWorld = canChange;
+        this.canChange = canChange;
     }
 }

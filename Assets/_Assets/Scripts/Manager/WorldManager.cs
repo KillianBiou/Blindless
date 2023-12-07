@@ -356,7 +356,8 @@ public class WorldManager : MonoBehaviour
     {
         foreach (AudioSource audio in realWorldAudioSources)
         {
-            audio.volume = volume;
+            if (audio)
+                audio.volume = volume;
         }
     }
 
@@ -364,7 +365,8 @@ public class WorldManager : MonoBehaviour
     {
         foreach (AudioSource audio in netWorldAudioSources)
         {
-            audio.volume = volume;
+            if (audio)
+                audio.volume = volume;
         }
     }
 }

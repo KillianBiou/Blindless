@@ -26,6 +26,6 @@ public class UITranslation : MonoBehaviour
 
     private void Update()
     {
-        rect.position += translationDirection * translationSpeed * Time.deltaTime;
+        rect.position += transform.up * translationSpeed * Time.deltaTime;
     }
 }

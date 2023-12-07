@@ -58,27 +58,26 @@ public class VisionPointer : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (!closedEye || !eyeTemp)
-        {
-            Ray ray = new Ray(eyeTransform.position, eyeTransform.forward);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, targetLayer))
-            {
-                targetPos = hit.point;
-            }
+        Transform targetOrigin = !closedEye || !eyeTemp ? eyeTransform : centerEye;
 
-            if (doLerp)
+        Ray ray = new Ray(targetOrigin.position, targetOrigin.forward);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, targetLayer))
+        {
+            targetPos = hit.point;
+        }
+
+        if (doLerp)
+        {
+            if (Vector3.Distance(targetPos, objectToMove.position) > snappingDistance)
             {
-                if (Vector3.Distance(targetPos, objectToMove.position) > snappingDistance)
-                {
-                    objectToMove.position += (targetPos - objectToMove.position) * lerpSpeed;
-                }
-                else
-                    objectToMove.position = targetPos;
+                objectToMove.position += (targetPos - objectToMove.position) * lerpSpeed;
             }
             else
                 objectToMove.position = targetPos;
         }
+        else
+            objectToMove.position = targetPos;
     }
 
     private void Update()

@@ -12,6 +12,7 @@ public class TransfoManager : MonoBehaviour
 
     [SerializeField] private TMP_Text transfoText;
     [SerializeField] private TMP_Text transfoBaseText;
+    [SerializeField] private GameObject helpButton;
 
     private bool hasWin = false;
     private bool hasStarted = false;
@@ -69,6 +70,7 @@ public class TransfoManager : MonoBehaviour
         if (!hasWin)
         {
             MonologueManager.Instance.PlayTransformerDestroyedClip();
+            helpButton.SetActive(true);
         }
         hasWin = true;
         Debug.Log("transfo win");

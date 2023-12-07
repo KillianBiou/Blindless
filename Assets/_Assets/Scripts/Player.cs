@@ -10,8 +10,9 @@ public class Player : MonoBehaviour
     private int maxHp;
     [SerializeField]
     private int hp;
-
+    
     private bool dead = false;
+    private Vector3 basePos;
 
     private List<PlayerSubscriber> subscriberList = new List<PlayerSubscriber>();
 
@@ -21,6 +22,7 @@ public class Player : MonoBehaviour
     {
         Instance = this;
         hp = maxHp;
+        basePos = transform.position;
     }
 
     private void TriggerDeath()
@@ -44,4 +46,16 @@ public class Player : MonoBehaviour
             TriggerDeath();
         }
     }
+
+    /*public IEnumerator MovePlayerTo(Vector3 targetPos, float speed)
+    {
+        basePos = transform.position;
+        float t = 0;
+        while(t < 1f)
+        {
+            transform.position = new Vector3(Mathf.Lerp(basePos.x, targetPos.x, t / 1f), Mathf.Lerp(basePos.y, targetPos.y, t / 1f), Mathf.Lerp(basePos.z, targetPos.z, t / 1f));
+            yield return new WaitForEndOfFrame();
+            t += Time.deltaTime * speed;
+        }
+    }*/
 }

@@ -37,6 +37,11 @@ public class NetWorldManager : MonoBehaviour
         UpdateText();
     }
 
+    private void Start()
+    {
+        keyboard.gameObject.SetActive(true);
+    }
+
     private void Update()
     {
         if(Input.GetKeyUp(KeyCode.W)) {
@@ -133,6 +138,7 @@ public class NetWorldManager : MonoBehaviour
             case NetAccess.ADMINISTRATOR:
 
                 currentAccess = NetAccess.ROOT;
+                WorldManager.instance.CycleWorld();
                 StoryManager.Instance.StartOutro();
                 break;
             default:
