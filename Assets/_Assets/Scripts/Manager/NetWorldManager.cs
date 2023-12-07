@@ -93,6 +93,27 @@ public class NetWorldManager : MonoBehaviour
         HideKeyboard();
     }
 
+    private void UpdateText()
+    {
+        switch (currentAccess)
+        {
+            case NetAccess.OUTSIDER:
+                currentAccessText.text = "OUTSIDER";
+                break;
+            case NetAccess.GUEST:
+                currentAccessText.text = "GUEST";
+                break;
+            case NetAccess.ADMINISTRATOR:
+                currentAccessText.text = "ADMINISTRATOR";
+                break;
+            case NetAccess.ROOT:
+                currentAccessText.text = "ROOT";
+                break;
+        }
+        netStatus.SetActive(false);
+        HideKeyboard();
+    }
+
     public void EscalatePrivilege()
     {
         switch (currentAccess)
@@ -112,30 +133,12 @@ public class NetWorldManager : MonoBehaviour
             case NetAccess.ADMINISTRATOR:
 
                 currentAccess = NetAccess.ROOT;
+                StoryManager.Instance.StartOutro();
                 break;
             default:
                 break;
         }
         UpdateText();
-    }
-
-    private void UpdateText()
-    {
-        switch (currentAccess)
-        {
-            case NetAccess.OUTSIDER:
-                currentAccessText.text = "OUTSIDER";
-                break;
-            case NetAccess.GUEST:
-                currentAccessText.text = "GUEST";
-                break;
-            case NetAccess.ADMINISTRATOR:
-                currentAccessText.text = "ADMINISTRATOR";
-                break;
-            case NetAccess.ROOT:
-                currentAccessText.text = "ROOT";
-                break;
-        }
     }
 
     public void CommuteNetStatus()

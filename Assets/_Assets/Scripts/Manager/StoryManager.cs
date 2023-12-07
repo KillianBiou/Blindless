@@ -15,14 +15,22 @@ public class StoryManager : MonoBehaviour
     private Camera cam;
 
     [SerializeField] private Light mainLight;
+    [SerializeField] private GameObject UIHolder;
+    [SerializeField] private GameObject UICreditHolder;
 
     [SerializeField] private List<AudioSource> audioSources;
 
     [SerializeField] private bool debug = false;
+
+    public static StoryManager Instance;
     // Start is called before the first frame update
     private bool hasStopped = false;
 
-    
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     void Start()
     {
         cam = Camera.main;
@@ -53,6 +61,10 @@ public class StoryManager : MonoBehaviour
         if (!debug && !hasStopped && !audioSource.isPlaying)
         {
             StopIntro();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            StartOutro();
         }
     }
 
@@ -91,5 +103,20 @@ public class StoryManager : MonoBehaviour
         listener.enabled = false;
         mainLight.gameObject.SetActive(true);
         GetComponent<TutorialManager>().StartTuto();
+    }
+
+    public void StartOutro()
+    {
+        mainLight.gameObject.SetActive(false);
+        UIHolder.SetActive(false);
+        UICreditHolder.SetActive(true);
+        MonologueManager.Instance.PlayShooting();
+        StartCoroutine(CloseApplication(25f));
+    }
+
+    private IEnumerator CloseApplication(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        Application.Quit();
     }
 }
