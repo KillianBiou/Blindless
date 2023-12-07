@@ -66,6 +66,10 @@ public class TransfoManager : MonoBehaviour
 
     private void Win()
     {
+        if (!hasWin)
+        {
+            MonologueManager.Instance.PlayTransformerDestroyedClip();
+        }
         hasWin = true;
         Debug.Log("transfo win");
         transfoBaseText.text = "Suffisant privileges, you can launch escalation for root.";

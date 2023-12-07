@@ -51,12 +51,12 @@ public class PasswordManager : MonoBehaviour
 
     private void Win()
     {
-        Invoke("DeactivateKeyboard", 1f);
+        DeactivateKeyboard();
         hatchAnimator.SetTrigger("Open");
         doorSource.loop = false;
         doorSource.Stop();
         NetWorldManager.Instance.EscalatePrivilege();
-        NetWorldManager.Instance.DeleteKeyboard();
+        //NetWorldManager.Instance.DeleteKeyboard();
         TransfoManager.instance.StartTransfo();
     }
 

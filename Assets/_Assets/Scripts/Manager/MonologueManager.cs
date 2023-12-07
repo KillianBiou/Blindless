@@ -9,11 +9,14 @@ public class MonologueManager : MonoBehaviour
     [SerializeField] private List<AudioClip> monologuesList;
 
     private AudioSource audioSource;
+
+    [SerializeField] private GameObject overlayImage;
     // Start is called before the first frame update
     void Start()
     {
         Instance = this;
         audioSource = GetComponent<AudioSource>();
+        overlayImage.SetActive(false);
     }
 
     public void PlayFindPasswordClip()
@@ -50,5 +53,13 @@ public class MonologueManager : MonoBehaviour
         audioSource.Stop();
         audioSource.clip = monologuesList[index];
         audioSource.Play();
+        overlayImage.SetActive(true);
+        StartCoroutine(WaitUntilClipEnds());
+    }
+
+    private IEnumerator WaitUntilClipEnds()
+    {
+        yield return new WaitUntil(() => audioSource.isPlaying == false );
+        overlayImage.SetActive(false);
     }
 }
