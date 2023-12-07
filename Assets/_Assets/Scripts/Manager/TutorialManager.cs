@@ -51,6 +51,7 @@ public class TutorialManager : MonoBehaviour
                     case 0:
                         OverlayManager.instance.ShowNetTuto();
                         isDisplayed = true;
+                        FingerWorldTransitioner.instance.SetCanChange(true);
                         break;
                     case 1:
                         if (WorldManager.instance.GetCurrentWorldType() == WorldType.REAL)
