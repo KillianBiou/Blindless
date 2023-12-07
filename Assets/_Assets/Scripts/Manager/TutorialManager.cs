@@ -85,6 +85,7 @@ public class TutorialManager : MonoBehaviour
                     case 0:
                         if (usedNetGesture)
                         {
+                            MonologueManager.Instance.PlayFindPasswordClip();
                             OverlayManager.instance.HideNetTuto();
                             currentState++;
                             isDisplayed = false;

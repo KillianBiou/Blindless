@@ -69,6 +69,7 @@ public class DeamonManager : MonoBehaviour, PlayerSubscriber
 
     public void StartGame()
     {
+        MonologueManager.Instance.PlayDeamonsAttackClip();
         alarmAudioSource.Play();
         WorldManager.instance.TriggerNet();
         PinchGun.instance.SetLockDuration(1f);
@@ -95,6 +96,7 @@ public class DeamonManager : MonoBehaviour, PlayerSubscriber
 
     private void TriggerWin()
     {
+        MonologueManager.Instance.PlayDeamonsVanishedClip();
         alarmAudioSource.Stop();
         Debug.Log("Daemon Defeated");
         NetWorldManager.Instance.SetDeamonTrigger(false);

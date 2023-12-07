@@ -51,12 +51,18 @@ public class PasswordManager : MonoBehaviour
 
     private void Win()
     {
-        this.enabled = false;
+        Invoke("DeactivateKeyboard", 1f);
         hatchAnimator.SetTrigger("Open");
         doorSource.loop = false;
         doorSource.Stop();
         NetWorldManager.Instance.EscalatePrivilege();
         NetWorldManager.Instance.DeleteKeyboard();
         TransfoManager.instance.StartTransfo();
+    }
+
+    private void DeactivateKeyboard()
+    {
+        MonologueManager.Instance.PlayPasswordPassedClip();
+        this.enabled = false;
     }
 }
