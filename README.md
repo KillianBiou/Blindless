@@ -1,5 +1,5 @@
 # Gameplay Video
-[![Watch the video](https://github.com/KillianBiou/Projet3DM1/blob/main/Minia.png)](https://www.youtube.com/watch?v=ekPMJYbDVvU)
+[![Watch the video](https://github.com/KillianBiou/Blindless/assets/62405524/3af6c83f-67a7-430e-aea4-67cb9b210fb2)](https://www.youtube.com/watch?v=ekPMJYbDVvU)
 
 # Blindless
  
